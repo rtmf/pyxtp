@@ -53,7 +53,7 @@ resite	= {
 				"desc"		:	"""
 								""",
 								},
-			{ "name"		: "telepresence rig",
+			{ "name"		: "telepresence-rig",
 					"price"		: 699,
 					"class"		: "android-compatible propeller-droidbot-platform robot",
 					"title"		:	"",
@@ -197,15 +197,15 @@ resite	= {
 				</body>
 			""",
 			"js"			: """
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/jquery.js"></script>
+				<script src="jquery.js"></script>
 				<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/bootstrap.js"></script>
+				<script src="bootstrap.js"></script>
 				<!--<script src="js/retina.min.js"></script>-->
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/modernizr.js"></script>
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/main.js"></script>  
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/filter.js"></script>
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/sidebarEffects.js"></script>
-				<script src="Nome%20pagina%20-%20Robots%20Everywhere_files/form.js"></script>
+				<script src="modernizr.js"></script>
+				<script src="main.js"></script>  
+				<script src="filter.js"></script>
+				<script src="sidebarEffects.js"></script>
+				<script src="form.js"></script>
 			""",
 			"index"		: """
 				<template name="dtd" />
@@ -228,7 +228,7 @@ resite	= {
 				<li class="${class}" name="${name}">
 					<div class="single-product">
 						<a href="#">
-							<img src="img/${name}.jpeg">	
+							<img src="img/products/${name}.jpeg">	
 						</a>
 					</div> <!-- .single-product -->
 					<div class="info">
@@ -336,7 +336,7 @@ resite	= {
 							<div class="col-md-5 col-lg-5">
 								<div class="brand">
 									<div class="logo-footer">
-										<img src="Nome%20pagina%20-%20Robots%20Everywhere_files/robots-everywhere-footer.png">
+										<img src="img/robots-everywhere-footer.png">
 									</div>
 									<div class="content-footer">
 										<span>Robots Everywhere</span><br>
