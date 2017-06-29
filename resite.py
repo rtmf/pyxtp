@@ -218,7 +218,7 @@ resite	= {
 				<section>
 					<div id="st-trigger-effects" class="column">
 						<button data-effect="st-effect-7">filter robots</button>
-					</div>
+					</div><!-- st-trigger-effects .column -->
 					<ul class="products-list">
 						<foreach list="items" name="item" />
 					</ul>
@@ -286,7 +286,7 @@ resite	= {
 							</ul>
 						</nav>
 						<a href="#" class="nav-toggle">Menu<span></span></a>
-					</div><!-- header content -->
+					</div><!-- header-content -->
 				</header><!-- header -->
 			""",
 			"header"	:	"""
@@ -319,10 +319,10 @@ resite	= {
 								
 								<label for="msg">Any questions?</label>
 								<textarea id="msginput" name="msg"></textarea><!--id="msg"-->
-							</div>
+							</div><!-- .cbp-mc-column -->
 							<div class="cbp-mc-submit-wrap">
 								<input id="submitinput" class="cbp-mc-submit" value="Send" type="submit">
-							</div>
+							</div><!-- .cbp-mc-submit-wrap -->
 						</form>
 					</div> <!-- end contact_form -->
 				</section>
@@ -335,15 +335,15 @@ resite	= {
 								<div class="brand">
 									<div class="logo-footer">
 										<img src="img/robots-everywhere-footer.png">
-									</div>
+									</div><!-- .logo-footer -->
 									<div class="content-footer">
 										<span>Robots Everywhere</span><br>
 										Lorem ispsum lorem ipsum lorem ipsum lorem 
 			ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem 
 			ipsum lorem ipsum.
-									</div>
-								</div>
-							</div>
+									</div><!-- .content-footer -->
+								</div><!-- .brand -->
+							</div><!-- .col -->
 							<div class="col-md-7 col-lg-7">
 								<ul>
 									<li><a href="http://robots-everywhere.com/re_site/consulting/">Consulting</a></li>
@@ -357,9 +357,9 @@ resite	= {
 									<li class="social"><a href="#"><i class="icon icon-linkedin icon-2x"></i></a></li>
 								</ul>
 								<p class="result"></p>
-							</div>
-						</div>
-					</div>
+							</div><!-- .col -->
+						</div><!-- .row -->
+					</div><!-- .container -->
 				</footer>
 			""",
 	},
