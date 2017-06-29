@@ -197,15 +197,15 @@ resite	= {
 				</body>
 			""",
 			"js"			: """
-				<script src="jquery.js"></script>
+				<script src="js/jquery.js"></script>
 				<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
-				<script src="bootstrap.js"></script>
+				<script src="js/bootstrap.js"></script>
 				<!--<script src="js/retina.min.js"></script>-->
-				<script src="modernizr.js"></script>
-				<script src="main.js"></script>  
-				<script src="filter.js"></script>
-				<script src="sidebarEffects.js"></script>
-				<script src="form.js"></script>
+				<script src="js/modernizr.js"></script>
+				<script src="js/main.js"></script>  
+				<script src="js/filter.js"></script>
+				<script src="js/sidebarEffects.js"></script>
+				<script src="js/form.js"></script>
 			""",
 			"index"		: """
 				<template name="dtd" />
