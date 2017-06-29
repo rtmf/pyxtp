@@ -1620,6 +1620,12 @@ ul.products-list li{
   overflow:hidden;
 }
 
+.product-desc{
+	overflow-y:auto;
+	overflow-x:hidden;
+	height:7em;
+}
+
 .single-product img{
   width:100%;
 }

@@ -9,36 +9,41 @@ resite	= {
 			{ "name"		: "laser-3.5W",
 				"price"		: 195,
 				"class"		: "laser",
-				"title"		:	"",
+				"title"		:	"3.5 Watt Laser",
 				"desc"		:	"""
+										Very Powerful L-Cheapo Laser Module
 								""",
 								},
 			{ "name"		: "laser-5.6W",
 				"price"		: 245,
 				"class"		: "laser",
-				"title"		:	"",
+				"title"		:	"5.6 Watt Laser",
 				"desc"		:	"""
+										Insanely Powerful L-Cheapo Laser Module
 								""",
 								},
 			{ "name"		: "laser-7.8W",
 				"price"		: 275,
 				"class"		: "laser",
-				"title"		:	"",
+				"title"		:	"7.8 Watt Laser",
 				"desc"		:	"""
+										Ludicrously Powerful L-Cheapo Laser Module
 								""",
 								},
 			{ "name"		: "antbot-board",
 				"price"		: 39,
 				"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
-				"title"		:	"",
+				"title"		:	"DroidBot Platform",
 				"desc"		:	"""
+										This is our Arduino-backed droidbot platform, everything you need to start building your own robot controlled by an android device!
 								""",
 								},
 			{ "name"		: "antbot-full",
 				"price"		: 199,
 				"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
-				"title"		:	"",
+				"title"		:	"Antbot",
 				"desc"		:	"""
+										This is a fully assembled, ready-to-go antbot, the flagship product for our Arduino-backed droidbot platform.
 								""",
 								},
 			{ "name"		: "renegade-full",
@@ -194,10 +199,8 @@ resite	= {
 					<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,700' rel='stylesheet' type='text/css'>
 					<link rel="stylesheet" href="css/bootstrap.min.css">
 					<link rel="stylesheet" href="css/animate.min.css">
-					<!--<link rel="stylesheet" href="css/main.css">-->
 					<link rel="stylesheet" href="css/style.css">
 					<link rel="stylesheet" type="text/css" href="css/filter.css" />
-					<!--<link rel="stylesheet" href="css/responsive.css">-->
 					<script src="http://use.fonticons.com/dc00d20b.js"></script>
 						<link rel="shortcut icon" href="img/favicon.ico"/>
 				</head>
@@ -255,7 +258,7 @@ resite	= {
 					</div> <!-- .single-product -->
 					<div class="info">
 						<h3><a href="#">${title}</a></h3>
-						<p>${desc}</p>
+						<p class="product-desc">${desc}</p>
 						<footer class="infobtn">
 							<template name="paypal">
 								<a class="btn btn-large" href="${url}" target="_blank">info</a>
