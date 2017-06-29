@@ -4,6 +4,7 @@ import xtp
 resite	= {
 		"title"				: "Store",
 		"desc"				: "Turn money into cool robots!",
+		"paypal-email":	"mkb@libero.it",
 		"items"				: [
 			{ "name"		: "laser-3.5W",
 				"price"		: 195,
@@ -61,7 +62,7 @@ resite	= {
 				"class"		: "android-compatible propeller-droidbot-platform robot",
 				"title"		:	"Telepresence Bot",
 				"desc"		:	"""
-				This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with our custom Linphone build or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
+				This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with Linphone or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
 				""",
 				},
 			{ "name"		: "spectroscope",
@@ -151,6 +152,24 @@ resite	= {
 					},
 			],
 	"templates"		: {
+			"paypal"		: """
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+					<input type="hidden" name="cmd" value="_xclick">
+					<input type="hidden" name="business" value="${paypal-email}">
+					<input type="hidden" name="lc" value="BM">
+					<input type="hidden" name="item_name" value="${title}">
+					<input type="hidden" name="item_number" value="${name}">
+					<input type="hidden" name="amount" value="${price}">
+					<input type="hidden" name="currency_code" value="USD">
+					<input type="hidden" name="button_subtype" value="goods">
+					<input type="hidden" name="no_note" value="0">
+					<input type="hidden" name="tax_rate" value="${tax:-0.00}">
+					<input type="hidden" name="shipping" value="${shipping:-0.00}">
+					<input type="hidden" name="bn" value="PP-BuyNowBF::NonHostedGuest">
+					<button type="submit" class="btn btn-large" border="0" name="buy-${name}" alt="PayPal - The safer, easier way to pay online!">buy</button>
+					${_}
+				</form>
+			""",
 			"dtd"				: """
 			<!doctype html>
 			""",
@@ -238,8 +257,9 @@ resite	= {
 						<h3><a href="#">${title}</a></h3>
 						<p>${desc}</p>
 						<footer class="infobtn">
-							<a class="btn btn-large" href="#contact" id="buy">buy</a>
-							<a class="btn btn-large" href="#" target="_blank">info</a>
+							<template name="paypal">
+								<a class="btn btn-large" href="${url}" target="_blank">info</a>
+							</template>
 						</footer>
 					</div> <!-- .info -->
 				</li>

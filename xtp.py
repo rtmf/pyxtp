@@ -127,9 +127,9 @@ class TemplateEngine():
 			if mode=='+':
 				value=data
 			elif mode=='.':
-				value=data.join(values)
+				value=data.join(map(str,values))
 			else:
-				value=values[0]
+				value=str(values[0])
 		if not len(value):
 			self.log("could not find ${%s:%s} or result is empty string"%(param,expn))
 		else:
