@@ -5,6 +5,7 @@ from html.parser import HTMLParser
 from html.entities import html5 as entities, name2codepoint as characters
 import types
 class TemplateEngine():
+	noindent=["link","img","input","meta"]
 	truthy=["yes","on","1","true"]
 	xtptags=["template","foreach","parm"]
 	statelist=[
@@ -68,7 +69,6 @@ class TemplateEngine():
 
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
-		self._parser=TemplateParser(self)
 		self._template=template
 		self._kwargs={**kwargs,**self._kwargs}
 		self._attrs=attrs
@@ -100,11 +100,13 @@ class TemplateEngine():
 							else:
 								template=subtemp
 						subitem['template']=template
-						self.append(self.render(**subitem,iterlist=None,itersublist=itersublist))
+						self.append(self.render(**subitem,iterlist=None,itersublist=itersublist,attrs=self._attrs))
 					else:
 						raise(Exception('Sublist passed instead of dict but sublist is not enabled!'))
 		self._parser.close()
-		return self.pop()
+		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
+	def xtp_wrap(self,name,data):
+		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)
 	def submatch(self,match):
 		return self.expand(**match.groupdict())
 	def expand(self,param,flags=None,index=None,sflag=None,expn=None):
@@ -156,7 +158,9 @@ class TemplateEngine():
 					if line.strip() != ''
 					])
 	def append(self,data):
-		self._buffer+=self.subst(data)
+		for line in (data.split('\n')):
+			if line.strip() != '':
+				self._buffer+=''+line+'\n'
 	def render_attrs(self,attrs): 
 		return ["%s='%s'"%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs):
@@ -199,8 +203,10 @@ class TemplateEngine():
 			for attr in statelist+self.statelist}
 	def push(self,statelist=[]):
 		self._stack.append(self.state())
+		self._parser=TemplateParser(self)
 		self._buffer=''
 	def pop(self):
+		self._parser.close()
 		result=self._buffer
 		for attr,value in self._stack.pop().items():
 			self.set(type(attr).__name__,self.bindfunc(setattr),attr,value)
@@ -215,29 +221,38 @@ class TemplateEngine():
 		self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs)) 
 	def handle_starttag(self,tag,attrs):
 		if tag in self._render_xtp__funcs:
-			self._opentag=[tag,attrs]
+			self._opentag=(tag,attrs)
 			self.push()
 		else:
 			self.append(self.indent("<%s>"%self.render_tag(tag,attrs)))
-			self._indent+=1
+			if tag not in self.noindent:
+				self._indent+=1
 	def handle_endtag(self,tag):
 		if tag in self._render_xtp__funcs:
 			body=self.pop()
 			tag,attrs=self._opentag
-			attrs.append(('_body_',body),('_',body))
-			self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs))
+			self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs+[('_',body),('_body_',body)]))
 		else:
-			self._indent-=1
+			if tag not in self.noindent:
+				self._indent-=1
 			self.append(self.indent("</%s>"%tag))
 	def handle_data(self,data):
 		self.append(self.indent(data))
-
+	def handle_comment(self,comment):
+		self.append(self.indent("<!-- %s -->"%comment))
+	def handle_decl(self,decl):
+		self.append(self.indent("<!%s>"%decl))
+	def handle_pi(self,pi):
+		self.append(self.indent("<?%s>"%pi))
+	def unknown_decl(self,decl):
+		self.append(self.indent("<![%s]>"%decl))
 class TemplateParser(HTMLParser):
 	def __init__(self,engine):
 		super().__init__(convert_charrefs=False)
 		self._engine=engine
 		for (handler,handled) in [(handler,getattr(self._engine,handler)) for handler in dir(self._engine) if handler.startswith('handle_')]:
 			setattr(self,handler,handled)
+		self.unknown_decl=self._engine.unknown_decl
 #			self.addmethod(
 #					(lambda self,*args,**kwargs:(
 #					self.log(args) and self.log(kwargs) and
