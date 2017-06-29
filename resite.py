@@ -277,19 +277,17 @@ resite	= {
 				</li>
 			""",
 			"menu"		: """
-						<!-- Top Navigation -->
-						<header id="header">
-							<div class="header-content clearfix">
-								<a class="logo" href="http://robots-everywhere.com/re_site/"><img  src="img/robots-everywhere.png"> <span>ROBOTS EVERYWHERE</span></a>
-								<nav class="navigation" role="navigation">
-									<ul class="primary-nav">
-										<foreach subtemp="first" sublist="yes" name="menuitem" list="menu" />
-									</ul>
-								</nav>
-							<a href="#" class="nav-toggle">Menu<span></span></a>
-						</div><!-- header content -->
-					</header><!-- header -->
-				</div>
+				<header id="header">
+					<div class="header-content clearfix">
+						<a class="logo" href="http://robots-everywhere.com/re_site/"><img  src="img/robots-everywhere.png"> <span>ROBOTS EVERYWHERE</span></a>
+						<nav class="navigation" role="navigation">
+							<ul class="primary-nav">
+								<foreach subtemp="first" sublist="yes" name="menuitem" list="menu" />
+							</ul>
+						</nav>
+						<a href="#" class="nav-toggle">Menu<span></span></a>
+					</div><!-- header content -->
+				</header><!-- header -->
 			""",
 			"header"	:	"""
 				<div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
