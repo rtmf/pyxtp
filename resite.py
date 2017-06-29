@@ -177,7 +177,7 @@ resite	= {
 					<link rel="stylesheet" type="text/css" href="css/filter.css" />
 					<!--<link rel="stylesheet" href="css/responsive.css">-->
 					<script src="http://use.fonticons.com/dc00d20b.js"></script>
-					<link rel="shortcut icon" href="http://robots-everywhere.com/re_site/wp-content/uploads/2012/02/favicon.ico"/>
+						<link rel="shortcut icon" href="img/favicon.ico"/>
 				</head>
 			""",
 			"body"		:	"""
