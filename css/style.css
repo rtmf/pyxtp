@@ -281,7 +281,7 @@ margin-bottom:0;
 }
 
 .banner {
-  background-image: url(img/robots-everywhere-hero-grigio.jpg);
+  background-image: url("../img/robots-everywhere-hero-grigio.jpg");
   background-position: center top;
   background-repeat: no-repeat;
   -moz-background-size: cover;
@@ -810,7 +810,7 @@ margin-left:10%;
 	width:100%;
 	background-color:rgba(95, 218, 117, 1);
 	padding:2% 0 3.5% 0;
-  background-image: url("img/dot.png");
+  background-image: url("../img/dot.png");
 }
 
 .four-points h3{
