@@ -5,7 +5,7 @@ from html.parser import HTMLParser
 from html.entities import html5 as entities, name2codepoint as characters
 import types
 class TemplateEngine():
-	noindent=["link","img","input","meta"]
+	noindent=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
 	xtptags=["template","foreach","parm"]
 	statelist=[
