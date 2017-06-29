@@ -298,7 +298,7 @@ resite	= {
 				<div class="store-header">
 					<h1>Page Title</h1>
 					<h2>Lorem ipsum dolor sit amet</h2>
-				</dic><!-- /store-header -->
+				</div><!-- /store-header -->
 			""",
 			"contact"	: """
 				<section id="contact">
