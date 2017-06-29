@@ -41,32 +41,35 @@ resite	= {
 			{ "name"		: "renegade-full",
 				"price"		: 599,
 				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform robot",
-				"title"		:	"Renegade Rover aka TruckBot",
+				"title"		:	"Renegade Rover",
 				"desc"		:	"""
-			This massive beast is built around our Heavy Hybrid Motor Controller, a near drop-in replacement for the pololu motor driver at the heart of our classic arduino-backed droidbot platform capable of switching over twice the load at 1.21kW.
+			A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
 								""",
 								},
 			{ "name"		: "minimodem",
 				"price"		: 14,
 				"class"		: "android-compatible component",
-				"title"		:	"",
+				"title"		:	"Minimodem",
 				"desc"		:	"""
-								""",
-								},
+				This little gem is a grand example of what our engineers do best, enabling much of the cool stuff we do using a few simple parts and some deep wizardry!  Our audio serial modem is built around the venerable LM-324 and is also at the heart of our Arduino-based droidbot platform.  This circuit allows for serial communication with a stock un-rooted android device via the headphone jack, translating audio signals into TTL serial data suitable for UART input.
+				""",
+				},
 			{ "name"		: "telepresence-rig",
-					"price"		: 699,
-					"class"		: "android-compatible propeller-droidbot-platform robot",
-					"title"		:	"",
-					"desc"		:	"""
-								""",
-								},
+				"price"		: 699,
+				"class"		: "android-compatible propeller-droidbot-platform robot",
+				"title"		:	"Telepresence Bot",
+				"desc"		:	"""
+				This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with our custom Linphone build or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
+				""",
+				},
 			{ "name"		: "spectroscope",
-					"price"		: 299,
-					"class"		: "",
-					"title"		:	"",
-					"desc"		:	"""
-								""",
-								},
+				"price"		: 299,
+				"class"		: "",
+				"title"		:	"Pocket Spectroscope",
+				"desc"		:	"""
+				This device was designed initially for NASA to send to Mars, providing a much simpler and more robust alternative to what had been on the market at the time for chlorophyll detection.
+				""",
+				},
 			],
 	"categories"	: [
 			{ "name"		: "antbot",
@@ -166,7 +169,7 @@ resite	= {
 				<head>
 					<meta charset="utf-8">
 					<meta name="viewport" content="width=device-width, initial-scale=1">
-					<title>Nome pagina - Robots Everywhere</title>
+					<title>${title} - Robots Everywhere</title>
 					<link href='https://fonts.googleapis.com/css?family=Hind' rel='stylesheet' type='text/css'>
 					<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
 					<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,700' rel='stylesheet' type='text/css'>
