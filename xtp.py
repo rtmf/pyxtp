@@ -70,7 +70,7 @@ class TemplateEngine():
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
 		self._template=template
-		self._kwargs={**kwargs,**self._kwargs}
+		self._kwargs={**self._kwargs,**kwargs}
 		self._attrs=attrs
 		self._template=template
 		self._buffer=''
@@ -170,9 +170,10 @@ class TemplateEngine():
 		for assoc in dicts:
 			if type(assoc)==dict:
 				if name in assoc:
-					ret+=[assoc[name]]
+					ret.append(assoc[name])
 			elif type(assoc)==list:
-				ret+=[val for (key,val) in assoc if key==name]
+				for val in [val for (key,val) in assoc if key==name]:
+					ret.append(val)
 		if len(ret)==0 and error is not None:
 			raise Exception(error%name)
 		else:

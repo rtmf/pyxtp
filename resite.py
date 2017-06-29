@@ -2,6 +2,8 @@
 # vim: ts=2 sw=2 noet
 import xtp
 resite	= {
+		"title"				: "Store",
+		"desc"				: "Turn money into cool robots!",
 		"items"				: [
 			{ "name"		: "laser-3.5W",
 				"price"		: 195,
@@ -33,14 +35,14 @@ resite	= {
 								},
 			{ "name"		: "antbot-full",
 				"price"		: 199,
-				"class"		: "android-compatible arduino-droidbot-platform antbot-platform robot",
+				"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
 				"title"		:	"",
 				"desc"		:	"""
 								""",
 								},
 			{ "name"		: "renegade-full",
 				"price"		: 599,
-				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform robot",
+				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
 				"title"		:	"Renegade Rover",
 				"desc"		:	"""
 			A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
@@ -74,12 +76,10 @@ resite	= {
 	"categories"	: [
 			{ "name"		: "antbot",
 				"title"		: "Antbot" },
+			{ "name"		: "antbot-platform",
+				"title"		: "Antbot Platform"},
 			{ "name"		: "renegade",
 				"title"		: "Renegade" },
-			{ "name"		: "truckbot",
-				"title"		: "Truckbot" },
-			{ "name"		: "rsv",
-				"title"		: "RSV" },
 			],
 	"menu"				: [
 			[
@@ -297,8 +297,8 @@ resite	= {
 					<template name="menu" />
 				</div><!-- /st-content-inner -->
 				<div class="store-header">
-					<h1>Page Title</h1>
-					<h2>Lorem ipsum dolor sit amet</h2>
+					<h1>${title}</h1>
+					<h2>${desc}</h2>
 				</div><!-- /store-header -->
 			""",
 			"contact"	: """
