@@ -15,7 +15,6 @@ IMG = \
 			img/products/laser-3.5W.jpeg \
 			img/products/laser-7.8W.jpeg \
 			img/products/telepresence-rig.jpeg \
-			img/products/rig.jpeg \
 			img/products/minimodem.jpeg \
 			img/products/laser-5.6W.jpeg \
 			img/products/antbot-full.jpeg \
