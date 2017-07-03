@@ -1627,7 +1627,10 @@ ul.products-list li{
 }
 
 .single-product img{
-  width:100%;
+	margin:auto;
+	height:13em;
+	max-width:100%;
+	display:block;
 }
     
 .single-product footer{

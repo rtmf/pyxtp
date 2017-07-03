@@ -6,7 +6,14 @@ resite	= {
 		"desc"				: "Turn money into cool robots!",
 		"paypal-email":	"mkb@libero.it",
 		"items"				: [
+			#title is the display title of an item
+			#name is the internal ID for an item
+			#link is where the picture and info button should link to
+			#class is a space separated list of categories for the filter function
+			#price is in USD
+			#desc is the product description
 			{ "name"		: "laser-3.5W",
+				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
 				"price"		: 195,
 				"class"		: "laser",
 				"title"		:	"3.5 Watt Laser",
@@ -15,6 +22,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "laser-5.6W",
+				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
 				"price"		: 245,
 				"class"		: "laser",
 				"title"		:	"5.6 Watt Laser",
@@ -23,6 +31,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "laser-7.8W",
+				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
 				"price"		: 275,
 				"class"		: "laser",
 				"title"		:	"7.8 Watt Laser",
@@ -31,6 +40,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "antbot-board",
+				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
 				"price"		: 39,
 				"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
 				"title"		:	"DroidBot Platform",
@@ -39,6 +49,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "antbot-full",
+				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
 				"price"		: 199,
 				"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
 				"title"		:	"Antbot",
@@ -47,6 +58,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "renegade-full",
+				"link"		: "http://robots-everywhere.com/re_site/purchase/heavy-hybrid-motor-controller/",
 				"price"		: 599,
 				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
 				"title"		:	"Renegade Rover",
@@ -55,6 +67,7 @@ resite	= {
 								""",
 								},
 			{ "name"		: "minimodem",
+				"link"		: "http://robots-everywhere.com/re_site/purchase/audio-serial-module/",
 				"price"		: 14,
 				"class"		: "android-compatible component",
 				"title"		:	"Minimodem",
@@ -63,6 +76,7 @@ resite	= {
 				""",
 				},
 			{ "name"		: "telepresence-rig",
+				"link"		: "",
 				"price"		: 699,
 				"class"		: "android-compatible propeller-droidbot-platform robot",
 				"title"		:	"Telepresence Bot",
@@ -71,6 +85,7 @@ resite	= {
 				""",
 				},
 			{ "name"		: "spectroscope",
+				"link"		: "http://robots-everywhere.com/re_site/purchase/optical-chlorophyll-detector/",
 				"price"		: 299,
 				"class"		: "",
 				"title"		:	"Pocket Spectroscope",
@@ -80,6 +95,9 @@ resite	= {
 				},
 			],
 	"categories"	: [
+			#these are the categories for the filter function
+			#name is the keyword listed in the 'class' value for an item
+			#title is the displayed title for the category
 			{ "name"		: "antbot",
 				"title"		: "Antbot" },
 			{ "name"		: "antbot-platform",
@@ -88,8 +106,18 @@ resite	= {
 				"title"		: "Renegade" },
 			],
 	"menu"				: [
+			#this menu uses the sublist-template function
 			[
+				# title specifies display title
+				# link specifies link destination
+				# icon, if set, turns this into an icon entry with the specified icon
+				# class specifies css class
 				{
+					#this means the first item of a sublist, this item, contains:
+					#  * the name of the template to use on it
+					#  * the information to be used when calling it for the parent
+					#  * it passes the rest of the list as "sublist" to that template
+					#  * see template "tendina" for how this is used
 					"class"		: "menu-tendina",
 					"link"		: "robots/",
 					"title"		: "Robots",
@@ -157,6 +185,7 @@ resite	= {
 					},
 			],
 	"templates"		: {
+			#the only important template to render right now for resite is index, which generates index.html
 			"paypal"		: """
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 					<input type="hidden" name="cmd" value="_xclick">
@@ -249,15 +278,15 @@ resite	= {
 					</ul>
 				</section>
 			""",
-	"item"		: """
+			"item"		: """
 				<li class="${class}" name="${name}">
 					<div class="single-product">
-						<a href="#">
+						<a href="${link}">
 							<img src="img/products/${name}.jpeg">	
 						</a>
 					</div> <!-- .single-product -->
 					<div class="info">
-						<h3><a href="#">${title}</a></h3>
+						<h3><a href="${link}">${title}</a></h3>
 						<p class="product-desc">${desc}</p>
 						<footer class="infobtn">
 							<template name="paypal">
