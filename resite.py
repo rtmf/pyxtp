@@ -290,7 +290,7 @@ resite	= {
 						<p class="product-desc">${desc}</p>
 						<footer class="infobtn">
 							<template name="paypal">
-								<a class="btn btn-large" href="${url}" target="_blank">info</a>
+								<a class="btn btn-large" href="${link}" target="_blank">info</a>
 							</template>
 						</footer>
 					</div> <!-- .info -->
