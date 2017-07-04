@@ -46,7 +46,7 @@ class TemplateEngine():
 				self.log('No alt, no impl, generic:%s, child:%s'%(generic,child))
 				and None),generr)
 		self.addmethod(lambda self,child,alt,*args,**kwargs:
-				([funclist[child]  for funclist in 
+				([funclist[child]  for funclist in
 					[getattr(self,listname)]
 					if child in funclist] + [
 				alt if alt is not None else getattr(self,generr)]
@@ -61,9 +61,9 @@ class TemplateEngine():
 		listname='_'+generic+'__funcs'
 		if listname not in dir(self):
 			setattr(self,listname,{ impl.__name__[len(generic)+1:] : impl for impl in
-				[ func for func in [ 
-					getattr(self,name) for name in dir(self) 
-					if name.startswith(generic+'_') 
+				[ func for func in [
+					getattr(self,name) for name in dir(self)
+					if name.startswith(generic+'_')
 					] if type(func).__name__=='method' ] })
 		return listname,getattr(self,listname)
 
@@ -154,14 +154,14 @@ class TemplateEngine():
 	def indent(self,data):
 		return ''.join([
 				self._indentby*self._indent+line.strip()+'\n'
-					for line in data.split('\n') 
+					for line in data.split('\n')
 					if line.strip() != ''
 					])
 	def append(self,data):
 		for line in (data.split('\n')):
 			if line.strip() != '':
 				self._buffer+=''+line+'\n'
-	def render_attrs(self,attrs): 
+	def render_attrs(self,attrs):
 		return ["%s='%s'"%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs):
 		return " ".join([tag]+self.render_attrs(attrs))
@@ -219,7 +219,7 @@ class TemplateEngine():
 	def handle_charref(self,name):
 		self.append(''.join(self.dfind(name,[self._attrs,self._kwargs,characters])))
 	def handle_startendtag(self,tag,attrs):
-		self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs)) 
+		self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs))
 	def handle_starttag(self,tag,attrs):
 		if tag in self._render_xtp__funcs:
 			self._opentag=(tag,attrs)
@@ -247,6 +247,7 @@ class TemplateEngine():
 		self.append(self.indent("<?%s>"%pi))
 	def unknown_decl(self,decl):
 		self.append(self.indent("<![%s]>"%decl))
+
 class TemplateParser(HTMLParser):
 	def __init__(self,engine):
 		super().__init__(convert_charrefs=False)
@@ -265,3 +266,32 @@ class TemplateParser(HTMLParser):
 		return types.MethodType(func,self)
 	def feed(self,data):
 		super().feed(data)
+
+def render_file(filename):
+	sitemodule = import_module(filename)
+	xtp = TemplateEngine(templates=sitemodule.templates,
+			__all_data__=sitemodule.data,__all_pages__=sitemodule.pages)
+	for target,config in sitemodule.pages.items():
+		pagedata={}
+		if target in sitemodule.data:
+			pagedata={**sitemodule.data[target]}
+		if "data" in config:
+			for data in config["data"]:
+				if data in sitemodule.data:
+					pagedata={**pagedata, **sitemodule.data[data]}
+		open("./%s"%target,"w").write(
+				xtp.render(template=config["template"],**pagedata))
+
+def import_module(filename):
+	import importlib.util
+	import os.path
+	spec = importlib.util.spec_from_file_location(os.path.basename(filename)[:-3], filename)
+	sitemodule = importlib.util.module_from_spec(spec)
+	spec.loader.exec_module(sitemodule)
+	return sitemodule
+
+if __name__=='__main__':
+	import sys
+	print(sys.argv)
+	for filename in sys.argv[1:]:
+		render_file(filename)

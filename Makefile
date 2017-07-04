@@ -15,11 +15,11 @@ SUBDIRS=$(SITES)
 
 all: $(BUILD) $(SUBDIRS)
 
-clean: $(SUBDIRS)
-	$(MAKE) -C $@ clean
+clean: 
+	rm -rf $(BUILD)
 
 $(BUILD):
 	mkdir -p $(BUILD)
 
 $(SUBDIRS): $(BUILD) $(PYXTP)
-	$(MAKE) -C $@
+	$(MAKE) -C $@ all SUBDIR=$(ROOT)/$@

@@ -1,15 +1,51 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3`
 # vim: ts=2 sw=2 noet
-sites = {
+
+"""
+in XTP the important values of a site module like this one are:
+ * pages
+		This value is a dictionary of the render targets in the module, keyed by filename
+		What this means is you'll see:
+			|	"foo.html"	: {
+			|			"template"	: "bar",
+			|	}
+		Where template "bar" will render page "foo.html".
+		You can also optionally specify a list of data scopes to include in the root scope
+		This is not necessary in our example here as the data scope with the same key as a
+			-	page is automatically included in the scope.
+		Obviously, as this file is in pure python you could always compute your data value
+			-	directly as a composite of various sources, this is a convenience to allow you
+			- to more easily treat the site definition as a pure data file, and to allow for
+			- much greater ease of migration to an RDBMS if that becomes desired.
+ * data
+		This value is a dictionary of data scopes which can be included as parameters when
+			-	rendering a page, if a scope has the same key as a page then the renderer will
+			- automatically include it in the root scope.  You can always access any item in
+			- data{} by either <param name="foo::bar" /> or ${foo::bar}, and simply chain to
+			- specify a sub-scope.
+		There are no required or default names in this value.
+ * templates
+		This value is a dictionary where each key names a template.  For more on templates,
+			- full documentation is coming as XTP evolves, basic templating consists of a few
+			- tags and the ${} shell-alike(ish) parameter expansion system for places where a
+			- tag is not valid and to allow for a more powerful expansion system in XTPSubst.
+		There are no required or default names in this value.
+"""
+pages = {
+		#this the render targets for this module
 		"index.html"	:	{
 			"template"	:	"index",
-			"data"			: [ 
-				"index",
-				]
+			#"data"			: [ 
+			#this specifies which data chunks will be pulled directly into the site's namespace
+			#the rest of data will still be available as ${foo::bar}
+			#this particular data section is commented out as the data chunk with the same name
+			#as the page is automatically included in the root scope`.
+			#	"index",
+			#	]
 			}
 		}
 data = {
-		"index"	:	{
+		"index.html"	:	{
 			"title"				: "Store",
 			"desc"				: "Turn money into cool robots!",
 			"paypal-email":	"mkb@libero.it",
@@ -102,96 +138,96 @@ data = {
 			""",
 			},
 				],
-"categories"	: [
-		#these are the categories for the filter function
-		#name is the keyword listed in the 'class' value for an item
-		#title is the displayed title for the category
-		{ "name"		: "antbot",
-			"title"		: "Antbot" },
-		{ "name"		: "antbot-platform",
-			"title"		: "Antbot Platform"},
-		{ "name"		: "renegade",
-			"title"		: "Renegade" },
-		],
-"menu"				: [
-		#this menu uses the sublist-template function
-		[
-			# title specifies display title
-			# link specifies link destination
-			# icon, if set, turns this into an icon entry with the specified icon
-			# class specifies css class
-			{
-				#this means the first item of a sublist, this item, contains:
-				#  * the name of the template to use on it
-				#  * the information to be used when calling it for the parent
-				#  * it passes the rest of the list as "sublist" to that template
-				#  * see template "tendina" for how this is used
-				"class"		: "menu-tendina",
-				"link"		: "robots/",
-				"title"		: "Robots",
-				"template":	"tendina",
-				},
-			{
-				"link"		: "robots/land/",
-				"title"		: "Land",
-				},
-			{
-				"link"		: "robots/sea/",
-				"title"		: "Sea",
-				},
-			{
-				"link"		: "robots/air/",
-				"title"		: "Air",
-				},
-			{
-				"link"		: "robots/space/",
-				"title"		: "Space",
-				},
-			{
-				"link"		: "robots/underwater/",
-				"title"		: "Underwater",
-				},
+	"categories"	: [
+			#these are the categories for the filter function
+			#name is the keyword listed in the 'class' value for an item
+			#title is the displayed title for the category
+			{ "name"		: "antbot",
+				"title"		: "Antbot" },
+			{ "name"		: "antbot-platform",
+				"title"		: "Antbot Platform"},
+			{ "name"		: "renegade",
+				"title"		: "Renegade" },
 			],
-		{
-			"link"		: "data-loggers/",
-			"title"		: "Automation",
-			},
-		{
-			"link"		: "consulting/",
-			"title"		: "Consulting",
-			},
-		{
-			"link"		: "purchase/",
-			"title"		: "Buy/Download",
-			},
-		{
-				"link"		: "support/",
-				"title"		: "Support",
+	"menu"				: [
+			#this menu uses the sublist-template function
+			[
+				# title specifies display title
+				# link specifies link destination
+				# icon, if set, turns this into an icon entry with the specified icon
+				# class specifies css class
+				{
+					#this means the first item of a sublist, this item, contains:
+					#  * the name of the template to use on it
+					#  * the information to be used when calling it for the parent
+					#  * it passes the rest of the list as "sublist" to that template
+					#  * see template "tendina" for how this is used
+					"class"		: "menu-tendina",
+					"link"		: "robots/",
+					"title"		: "Robots",
+					"template":	"tendina",
+					},
+				{
+					"link"		: "robots/land/",
+					"title"		: "Land",
+					},
+				{
+					"link"		: "robots/sea/",
+					"title"		: "Sea",
+					},
+				{
+					"link"		: "robots/air/",
+					"title"		: "Air",
+					},
+				{
+					"link"		: "robots/space/",
+					"title"		: "Space",
+					},
+				{
+					"link"		: "robots/underwater/",
+					"title"		: "Underwater",
+					},
+				],
+			{
+				"link"		: "data-loggers/",
+				"title"		: "Automation",
 				},
-		{
-				"link"		: "support/contact-us/",
-				"title"		: "Contact us",
+			{
+				"link"		: "consulting/",
+				"title"		: "Consulting",
 				},
-		{
-				"class"		: "label-social",
-				"title"		: "Follow Us",
+			{
+				"link"		: "purchase/",
+				"title"		: "Buy/Download",
 				},
-		{
-				"class"		: "social",
-				"link"		: "#",
-				"icon"		: "icon-youtube-play",
-				},
-		{
-				"class"		: "social",
-				"link"		: "#",
-				"icon"		: "icon-facebook-official",
-				},
-		{
-				"class"		: "social",
-				"link"		: "#",
-				"icon"		: "icon-linkedin",
-				},
-		],
+			{
+					"link"		: "support/",
+					"title"		: "Support",
+					},
+			{
+					"link"		: "support/contact-us/",
+					"title"		: "Contact us",
+					},
+			{
+					"class"		: "label-social",
+					"title"		: "Follow Us",
+					},
+			{
+					"class"		: "social",
+					"link"		: "#",
+					"icon"		: "icon-youtube-play",
+					},
+			{
+					"class"		: "social",
+					"link"		: "#",
+					"icon"		: "icon-facebook-official",
+					},
+			{
+					"class"		: "social",
+					"link"		: "#",
+					"icon"		: "icon-linkedin",
+					},
+			],
 	},
 }
 templates = {
@@ -427,11 +463,5 @@ templates = {
 					</div><!-- .container -->
 				</footer>
 			""",
-	},
-}
+	}
 
-def render():
-	print(xtp.TemplateEngine(**resite).render("index"))
-
-if __name__ == '__main__':
-	render()
