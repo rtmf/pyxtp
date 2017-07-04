@@ -1,192 +1,202 @@
 #!/usr/bin/env python3
 # vim: ts=2 sw=2 noet
-import xtp
-resite	= {
-		"title"				: "Store",
-		"desc"				: "Turn money into cool robots!",
-		"paypal-email":	"mkb@libero.it",
-		"items"				: [
-			#title is the display title of an item
-			#name is the internal ID for an item
-			#link is where the picture and info button should link to
-			#class is a space separated list of categories for the filter function
-			#price is in USD
-			#desc is the product description
-			{ "name"		: "laser-3.5W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 195,
-				"class"		: "laser",
-				"title"		:	"3.5 Watt Laser",
-				"desc"		:	"""
-										Very Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "laser-5.6W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 245,
-				"class"		: "laser",
-				"title"		:	"5.6 Watt Laser",
-				"desc"		:	"""
-										Insanely Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "laser-7.8W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 275,
-				"class"		: "laser",
-				"title"		:	"7.8 Watt Laser",
-				"desc"		:	"""
-										Ludicrously Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "antbot-board",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
-				"price"		: 39,
-				"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
-				"title"		:	"DroidBot Platform",
-				"desc"		:	"""
-										This is our Arduino-backed droidbot platform, everything you need to start building your own robot controlled by an android device!
-								""",
-								},
-			{ "name"		: "antbot-full",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
-				"price"		: 199,
-				"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
-				"title"		:	"Antbot",
-				"desc"		:	"""
-										This is a fully assembled, ready-to-go antbot, the flagship product for our Arduino-backed droidbot platform.
-								""",
-								},
-			{ "name"		: "renegade-full",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/heavy-hybrid-motor-controller/",
-				"price"		: 599,
-				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
-				"title"		:	"Renegade Rover",
-				"desc"		:	"""
-			A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
-								""",
-								},
-			{ "name"		: "minimodem",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/audio-serial-module/",
-				"price"		: 14,
-				"class"		: "android-compatible component",
-				"title"		:	"Minimodem",
-				"desc"		:	"""
-				This little gem is a grand example of what our engineers do best, enabling much of the cool stuff we do using a few simple parts and some deep wizardry!  Our audio serial modem is built around the venerable LM-324 and is also at the heart of our Arduino-based droidbot platform.  This circuit allows for serial communication with a stock un-rooted android device via the headphone jack, translating audio signals into TTL serial data suitable for UART input.
-				""",
-				},
-			{ "name"		: "telepresence-rig",
-				"link"		: "",
-				"price"		: 699,
-				"class"		: "android-compatible propeller-droidbot-platform robot",
-				"title"		:	"Telepresence Bot",
-				"desc"		:	"""
-				This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with Linphone or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
-				""",
-				},
-			{ "name"		: "spectroscope",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/optical-chlorophyll-detector/",
-				"price"		: 299,
-				"class"		: "",
-				"title"		:	"Pocket Spectroscope",
-				"desc"		:	"""
-				This device was designed initially for NASA to send to Mars, providing a much simpler and more robust alternative to what had been on the market at the time for chlorophyll detection.
-				""",
-				},
-			],
-	"categories"	: [
-			#these are the categories for the filter function
-			#name is the keyword listed in the 'class' value for an item
-			#title is the displayed title for the category
-			{ "name"		: "antbot",
-				"title"		: "Antbot" },
-			{ "name"		: "antbot-platform",
-				"title"		: "Antbot Platform"},
-			{ "name"		: "renegade",
-				"title"		: "Renegade" },
-			],
-	"menu"				: [
-			#this menu uses the sublist-template function
-			[
-				# title specifies display title
-				# link specifies link destination
-				# icon, if set, turns this into an icon entry with the specified icon
-				# class specifies css class
-				{
-					#this means the first item of a sublist, this item, contains:
-					#  * the name of the template to use on it
-					#  * the information to be used when calling it for the parent
-					#  * it passes the rest of the list as "sublist" to that template
-					#  * see template "tendina" for how this is used
-					"class"		: "menu-tendina",
-					"link"		: "robots/",
-					"title"		: "Robots",
-					"template":	"tendina",
-					},
-				{
-					"link"		: "robots/land/",
-					"title"		: "Land",
-					},
-				{
-					"link"		: "robots/sea/",
-					"title"		: "Sea",
-					},
-				{
-					"link"		: "robots/air/",
-					"title"		: "Air",
-					},
-				{
-					"link"		: "robots/space/",
-					"title"		: "Space",
-					},
-				{
-					"link"		: "robots/underwater/",
-					"title"		: "Underwater",
-					},
+sites = {
+		"index.html"	:	{
+			"template"	:	"index",
+			"data"			: [ 
+				"index",
+				]
+			}
+		}
+data = {
+		"index"	:	{
+			"title"				: "Store",
+			"desc"				: "Turn money into cool robots!",
+			"paypal-email":	"mkb@libero.it",
+			"items"				: [
+				#title is the display title of an item
+				#name is the internal ID for an item
+				#link is where the picture and info button should link to
+				#class is a space separated list of categories for the filter function
+				#price is in USD
+				#desc is the product description
+				{ "name"		: "laser-3.5W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 195,
+					"class"		: "laser",
+					"title"		:	"3.5 Watt Laser",
+					"desc"		:	"""
+									Very Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "laser-5.6W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 245,
+					"class"		: "laser",
+					"title"		:	"5.6 Watt Laser",
+					"desc"		:	"""
+									Insanely Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "laser-7.8W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 275,
+					"class"		: "laser",
+					"title"		:	"7.8 Watt Laser",
+					"desc"		:	"""
+									Ludicrously Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "antbot-board",
+					"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
+					"price"		: 39,
+					"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
+					"title"		:	"DroidBot Platform",
+					"desc"		:	"""
+									This is our Arduino-backed droidbot platform, everything you need to start building your own robot controlled by an android device!
+							""",
+							},
+				{ "name"		: "antbot-full",
+					"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
+					"price"		: 199,
+					"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
+					"title"		:	"Antbot",
+					"desc"		:	"""
+									This is a fully assembled, ready-to-go antbot, the flagship product for our Arduino-backed droidbot platform.
+							""",
+							},
+				{ "name"		: "renegade-full",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/heavy-hybrid-motor-controller/",
+						"price"		: 599,
+						"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
+						"title"		:	"Renegade Rover",
+						"desc"		:	"""
+		A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
+							""",
+							},
+				{ "name"		: "minimodem",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/audio-serial-module/",
+						"price"		: 14,
+						"class"		: "android-compatible component",
+						"title"		:	"Minimodem",
+						"desc"		:	"""
+			This little gem is a grand example of what our engineers do best, enabling much of the cool stuff we do using a few simple parts and some deep wizardry!  Our audio serial modem is built around the venerable LM-324 and is also at the heart of our Arduino-based droidbot platform.  This circuit allows for serial communication with a stock un-rooted android device via the headphone jack, translating audio signals into TTL serial data suitable for UART input.
+			""",
+			},
+				{ "name"		: "telepresence-rig",
+						"link"		: "",
+						"price"		: 699,
+						"class"		: "android-compatible propeller-droidbot-platform robot",
+						"title"		:	"Telepresence Bot",
+						"desc"		:	"""
+			This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with Linphone or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
+			""",
+			},
+				{ "name"		: "spectroscope",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/optical-chlorophyll-detector/",
+						"price"		: 299,
+						"class"		: "",
+						"title"		:	"Pocket Spectroscope",
+						"desc"		:	"""
+			This device was designed initially for NASA to send to Mars, providing a much simpler and more robust alternative to what had been on the market at the time for chlorophyll detection.
+			""",
+			},
 				],
+"categories"	: [
+		#these are the categories for the filter function
+		#name is the keyword listed in the 'class' value for an item
+		#title is the displayed title for the category
+		{ "name"		: "antbot",
+			"title"		: "Antbot" },
+		{ "name"		: "antbot-platform",
+			"title"		: "Antbot Platform"},
+		{ "name"		: "renegade",
+			"title"		: "Renegade" },
+		],
+"menu"				: [
+		#this menu uses the sublist-template function
+		[
+			# title specifies display title
+			# link specifies link destination
+			# icon, if set, turns this into an icon entry with the specified icon
+			# class specifies css class
 			{
-				"link"		: "data-loggers/",
-				"title"		: "Automation",
+				#this means the first item of a sublist, this item, contains:
+				#  * the name of the template to use on it
+				#  * the information to be used when calling it for the parent
+				#  * it passes the rest of the list as "sublist" to that template
+				#  * see template "tendina" for how this is used
+				"class"		: "menu-tendina",
+				"link"		: "robots/",
+				"title"		: "Robots",
+				"template":	"tendina",
 				},
 			{
-				"link"		: "consulting/",
-				"title"		: "Consulting",
+				"link"		: "robots/land/",
+				"title"		: "Land",
 				},
 			{
-				"link"		: "purchase/",
-				"title"		: "Buy/Download",
+				"link"		: "robots/sea/",
+				"title"		: "Sea",
 				},
 			{
+				"link"		: "robots/air/",
+				"title"		: "Air",
+				},
+			{
+				"link"		: "robots/space/",
+				"title"		: "Space",
+				},
+			{
+				"link"		: "robots/underwater/",
+				"title"		: "Underwater",
+				},
+			],
+		{
+			"link"		: "data-loggers/",
+			"title"		: "Automation",
+			},
+		{
+			"link"		: "consulting/",
+			"title"		: "Consulting",
+			},
+		{
+			"link"		: "purchase/",
+			"title"		: "Buy/Download",
+			},
+		{
 				"link"		: "support/",
 				"title"		: "Support",
 				},
-			{
+		{
 				"link"		: "support/contact-us/",
 				"title"		: "Contact us",
 				},
-			{
+		{
 				"class"		: "label-social",
 				"title"		: "Follow Us",
 				},
-			{
-					"class"		: "social",
-					"link"		: "#",
-					"icon"		: "icon-youtube-play",
-					},
-			{
-					"class"		: "social",
-					"link"		: "#",
-					"icon"		: "icon-facebook-official",
-					},
-			{
-					"class"		: "social",
-					"link"		: "#",
-					"icon"		: "icon-linkedin",
-					},
-			],
-	"templates"		: {
-			#the only important template to render right now for resite is index, which generates index.html
-			"paypal"		: """
+		{
+				"class"		: "social",
+				"link"		: "#",
+				"icon"		: "icon-youtube-play",
+				},
+		{
+				"class"		: "social",
+				"link"		: "#",
+				"icon"		: "icon-facebook-official",
+				},
+		{
+				"class"		: "social",
+				"link"		: "#",
+				"icon"		: "icon-linkedin",
+				},
+		],
+	},
+}
+templates = {
+		#the only important template to render right now for resite is index, which generates index.html
+		"paypal"		: """
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 					<input type="hidden" name="cmd" value="_xclick">
 					<input type="hidden" name="business" value="${paypal-email}">
@@ -363,15 +373,15 @@ resite	= {
 								<label for="first_name">Name</label>
 								<input id="nomeinput" name="name" placeholder="Noel" type="text"><!--id="first_name"-->
 								<label class="error" for="name" id="name_error" style="display: none;">Your name is required.</label>
-								
+
 								<label for="email">Email</label>
 								<input id="emailinput" name="email" placeholder="noel.doe@gmail.com" type="text"><!--id="email"-->
 								<label class="error" for="email" id="email_error" style="display: none;">Your email is required.</label>
 															<label class="error" for="email" id="email_valid" style="display: none;">Your email is not valid.</label>
-								
+
 								<input class="trick" id="checkinput" name="check" placeholder="" type="text">
 								<label class="error" for="check" id="trick_error" style="display: none;">You're a bot || SPAM.</label>
-								
+
 								<label for="msg">Any questions?</label>
 								<textarea id="msginput" name="msg"></textarea><!--id="msg"-->
 							</div><!-- .cbp-mc-column -->
