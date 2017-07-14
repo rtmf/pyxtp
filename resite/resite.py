@@ -1,99 +1,143 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3`
 # vim: ts=2 sw=2 noet
-import xtp
-resite	= {
-		"title"				: "Store",
-		"desc"				: "Turn money into cool robots!",
-		"paypal-email":	"mkb@libero.it",
-		"items"				: [
-			#title is the display title of an item
-			#name is the internal ID for an item
-			#link is where the picture and info button should link to
-			#class is a space separated list of categories for the filter function
-			#price is in USD
-			#desc is the product description
-			{ "name"		: "laser-3.5W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 195,
-				"class"		: "laser",
-				"title"		:	"3.5 Watt Laser",
-				"desc"		:	"""
-										Very Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "laser-5.6W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 245,
-				"class"		: "laser",
-				"title"		:	"5.6 Watt Laser",
-				"desc"		:	"""
-										Insanely Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "laser-7.8W",
-				"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
-				"price"		: 275,
-				"class"		: "laser",
-				"title"		:	"7.8 Watt Laser",
-				"desc"		:	"""
-										Ludicrously Powerful L-Cheapo Laser Module
-								""",
-								},
-			{ "name"		: "antbot-board",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
-				"price"		: 39,
-				"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
-				"title"		:	"DroidBot Platform",
-				"desc"		:	"""
-										This is our Arduino-backed droidbot platform, everything you need to start building your own robot controlled by an android device!
-								""",
-								},
-			{ "name"		: "antbot-full",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
-				"price"		: 199,
-				"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
-				"title"		:	"Antbot",
-				"desc"		:	"""
-										This is a fully assembled, ready-to-go antbot, the flagship product for our Arduino-backed droidbot platform.
-								""",
-								},
-			{ "name"		: "renegade-full",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/heavy-hybrid-motor-controller/",
-				"price"		: 599,
-				"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
-				"title"		:	"Renegade Rover",
-				"desc"		:	"""
-			A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
-								""",
-								},
-			{ "name"		: "minimodem",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/audio-serial-module/",
-				"price"		: 14,
-				"class"		: "android-compatible component",
-				"title"		:	"Minimodem",
-				"desc"		:	"""
-				This little gem is a grand example of what our engineers do best, enabling much of the cool stuff we do using a few simple parts and some deep wizardry!  Our audio serial modem is built around the venerable LM-324 and is also at the heart of our Arduino-based droidbot platform.  This circuit allows for serial communication with a stock un-rooted android device via the headphone jack, translating audio signals into TTL serial data suitable for UART input.
-				""",
-				},
-			{ "name"		: "telepresence-rig",
-				"link"		: "",
-				"price"		: 699,
-				"class"		: "android-compatible propeller-droidbot-platform robot",
-				"title"		:	"Telepresence Bot",
-				"desc"		:	"""
-				This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with Linphone or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
-				""",
-				},
-			{ "name"		: "spectroscope",
-				"link"		: "http://robots-everywhere.com/re_site/purchase/optical-chlorophyll-detector/",
-				"price"		: 299,
-				"class"		: "",
-				"title"		:	"Pocket Spectroscope",
-				"desc"		:	"""
-				This device was designed initially for NASA to send to Mars, providing a much simpler and more robust alternative to what had been on the market at the time for chlorophyll detection.
-				""",
-				},
-			],
+
+"""
+in XTP the important values of a site module like this one are:
+ * pages
+		This value is a dictionary of the render targets in the module, keyed by filename
+		What this means is you'll see:
+			|	"foo.html"	: {
+			|			"template"	: "bar",
+			|	}
+		Where template "bar" will render page "foo.html".
+		You can also optionally specify a list of data scopes to include in the root scope
+		This is not necessary in our example here as the data scope with the same key as a
+			-	page is automatically included in the scope.
+		Obviously, as this file is in pure python you could always compute your data value
+			-	directly as a composite of various sources, this is a convenience to allow you
+			- to more easily treat the site definition as a pure data file, and to allow for
+			- much greater ease of migration to an RDBMS if that becomes desired.
+ * data
+		This value is a dictionary of data scopes which can be included as parameters when
+			-	rendering a page, if a scope has the same key as a page then the renderer will
+			- automatically include it in the root scope.  You can always access any item in
+			- data{} by either <param name="foo::bar" /> or ${foo::bar}, and simply chain to
+			- specify a sub-scope.
+		There are no required or default names in this value.
+ * templates
+		This value is a dictionary where each key names a template.  For more on templates,
+			- full documentation is coming as XTP evolves, basic templating consists of a few
+			- tags and the ${} shell-alike(ish) parameter expansion system for places where a
+			- tag is not valid and to allow for a more powerful expansion system in XTPSubst.
+		There are no required or default names in this value.
+"""
+pages = {
+		#this the render targets for this module
+		"index.html"	:	{
+			"template"	:	"index",
+			#"data"			: [ 
+			#this specifies which data chunks will be pulled directly into the site's namespace
+			#the rest of data will still be available as ${foo::bar}
+			#this particular data section is commented out as the data chunk with the same name
+			#as the page is automatically included in the root scope`.
+			#	"index",
+			#	]
+			}
+		}
+data = {
+		"index.html"	:	{
+			"title"				: "Store",
+			"desc"				: "Turn money into cool robots!",
+			"paypal-email":	"mkb@libero.it",
+			"items"				: [
+				#title is the display title of an item
+				#name is the internal ID for an item
+				#link is where the picture and info button should link to
+				#class is a space separated list of categories for the filter function
+				#price is in USD
+				#desc is the product description
+				{ "name"		: "laser-3.5W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 195,
+					"class"		: "laser",
+					"title"		:	"3.5 Watt Laser",
+					"desc"		:	"""
+									Very Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "laser-5.6W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 245,
+					"class"		: "laser",
+					"title"		:	"5.6 Watt Laser",
+					"desc"		:	"""
+									Insanely Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "laser-7.8W",
+					"link"		: "http://robots-everywhere.com/re_site_static/purchase/l-cheapo/",
+					"price"		: 275,
+					"class"		: "laser",
+					"title"		:	"7.8 Watt Laser",
+					"desc"		:	"""
+									Ludicrously Powerful L-Cheapo Laser Module
+							""",
+							},
+				{ "name"		: "antbot-board",
+					"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
+					"price"		: 39,
+					"class"		: "android-compatible arduino-droidbot-platform antbot-platform board component",
+					"title"		:	"DroidBot Platform",
+					"desc"		:	"""
+									This is our Arduino-backed droidbot platform, everything you need to start building your own robot controlled by an android device!
+							""",
+							},
+				{ "name"		: "antbot-full",
+					"link"		: "http://robots-everywhere.com/re_site/purchase/antbot-and-antbot-accessories/",
+					"price"		: 199,
+					"class"		: "android-compatible arduino-droidbot-platform antbot-platform antbot robot",
+					"title"		:	"Antbot",
+					"desc"		:	"""
+									This is a fully assembled, ready-to-go antbot, the flagship product for our Arduino-backed droidbot platform.
+							""",
+							},
+				{ "name"		: "renegade-full",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/heavy-hybrid-motor-controller/",
+						"price"		: 599,
+						"class"		: "android-compatible arduino-heavy-droidbot-platform antbot-platform renegade robot",
+						"title"		:	"Renegade Rover",
+						"desc"		:	"""
+		A.K.A. Truckbot, this massive beast is the reason we our Heavy Hybrid Motor Controller.  Its motors require significantly more than the 500W max output of the Pololu driver we usually use with our arduino droidbot platform.  We therefore created a near drop-in replacement capable of switching over twice the load, maxing out around 1.21kW.
+							""",
+							},
+				{ "name"		: "minimodem",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/audio-serial-module/",
+						"price"		: 14,
+						"class"		: "android-compatible component",
+						"title"		:	"Minimodem",
+						"desc"		:	"""
+			This little gem is a grand example of what our engineers do best, enabling much of the cool stuff we do using a few simple parts and some deep wizardry!  Our audio serial modem is built around the venerable LM-324 and is also at the heart of our Arduino-based droidbot platform.  This circuit allows for serial communication with a stock un-rooted android device via the headphone jack, translating audio signals into TTL serial data suitable for UART input.
+			""",
+			},
+				{ "name"		: "telepresence-rig",
+						"link"		: "",
+						"price"		: 699,
+						"class"		: "android-compatible propeller-droidbot-platform robot",
+						"title"		:	"Telepresence Bot",
+						"desc"		:	"""
+			This robot combines an android tablet with our more advanced propeller-backed droidbot platform.  Specially formatted text messages sent via either SIP with Linphone or Skype™ allow the user to drive the robot over the same connection that carries the voice and video call.
+			""",
+			},
+				{ "name"		: "spectroscope",
+						"link"		: "http://robots-everywhere.com/re_site/purchase/optical-chlorophyll-detector/",
+						"price"		: 299,
+						"class"		: "",
+						"title"		:	"Pocket Spectroscope",
+						"desc"		:	"""
+			This device was designed initially for NASA to send to Mars, providing a much simpler and more robust alternative to what had been on the market at the time for chlorophyll detection.
+			""",
+			},
+				],
 	"categories"	: [
 			#these are the categories for the filter function
 			#name is the keyword listed in the 'class' value for an item
@@ -157,17 +201,17 @@ resite	= {
 				"title"		: "Buy/Download",
 				},
 			{
-				"link"		: "support/",
-				"title"		: "Support",
-				},
+					"link"		: "support/",
+					"title"		: "Support",
+					},
 			{
-				"link"		: "support/contact-us/",
-				"title"		: "Contact us",
-				},
+					"link"		: "support/contact-us/",
+					"title"		: "Contact us",
+					},
 			{
-				"class"		: "label-social",
-				"title"		: "Follow Us",
-				},
+					"class"		: "label-social",
+					"title"		: "Follow Us",
+					},
 			{
 					"class"		: "social",
 					"link"		: "#",
@@ -184,9 +228,11 @@ resite	= {
 					"icon"		: "icon-linkedin",
 					},
 			],
-	"templates"		: {
-			#the only important template to render right now for resite is index, which generates index.html
-			"paypal"		: """
+	},
+}
+templates = {
+		#the only important template to render right now for resite is index, which generates index.html
+		"paypal"		: """
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 					<input type="hidden" name="cmd" value="_xclick">
 					<input type="hidden" name="business" value="${paypal-email}">
@@ -363,15 +409,15 @@ resite	= {
 								<label for="first_name">Name</label>
 								<input id="nomeinput" name="name" placeholder="Noel" type="text"><!--id="first_name"-->
 								<label class="error" for="name" id="name_error" style="display: none;">Your name is required.</label>
-								
+
 								<label for="email">Email</label>
 								<input id="emailinput" name="email" placeholder="noel.doe@gmail.com" type="text"><!--id="email"-->
 								<label class="error" for="email" id="email_error" style="display: none;">Your email is required.</label>
 															<label class="error" for="email" id="email_valid" style="display: none;">Your email is not valid.</label>
-								
+
 								<input class="trick" id="checkinput" name="check" placeholder="" type="text">
 								<label class="error" for="check" id="trick_error" style="display: none;">You're a bot || SPAM.</label>
-								
+
 								<label for="msg">Any questions?</label>
 								<textarea id="msginput" name="msg"></textarea><!--id="msg"-->
 							</div><!-- .cbp-mc-column -->
@@ -417,11 +463,5 @@ resite	= {
 					</div><!-- .container -->
 				</footer>
 			""",
-	},
-}
+	}
 
-def render():
-	print(xtp.TemplateEngine(**resite).render("index"))
-
-if __name__ == '__main__':
-	render()

@@ -1,0 +1,13 @@
+Parameters:
+	DONE - implement resolving by scope per target (page::data, data::filename,etc.)
+	TODO - implement expanding scopes
+	TODO - resolve sub-parameters at foo::bar for scopes
+	TODO - resolve array subscripting
+Rendering:
+	TODO - do some option parsing
+	DONE - load module by filename from command line
+	DONE - read targets from module
+	PARTIAL - build targets into output path (builds into CWD, make cd's)
+Refactoring:
+	TODO - inquire from xtp modules as to their targets and the static files they include
+	TODO - consider switching away from make-driven builds? that may be overly drastic. 
