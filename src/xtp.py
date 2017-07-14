@@ -17,9 +17,6 @@ def dfind(name,dicts,error=None):
 		raise Exception(error%name)
 	else:
 		return ret
-class XTPExpansion():
-	def __init__(self):
-		pass
 
 class XTPLogger():
 	def log(self,foo):
@@ -129,12 +126,61 @@ class XTPAutoStack(XTPLogger,XTPClassManipulator):
 		return {attr: self.get(type(attr).__name__,self.bindfunc(getattr,self.__stack_target__),attr)
 			for attr in statelist+self.__statelist__}
 
+class XTPExpansion(XTPLogger):
+	def __init__(self,dlist):
+		self._dlist=dlist
+	def submatch(self,match):
+		return self.expand(**match.groupdict())
+	def expand(self,param,flags=None,index=None,sflag=None,expn=None):
+		value=''
+		values=dfind(param,self._dlist)
+		if expn and len(expn)>0:
+			mode=expn[0]
+			data=expn[1:]
+		else:
+			mode=''
+			data=''
+		if len(values)==0:
+			if mode=='-':
+				value=data
+			elif mode=='|':
+				value=self.subst('${'+data+'}')
+		else:
+			if mode=='+':
+				value=data
+			elif mode=='.':
+				value=data.join(map(str,values))
+			else:
+				value=str(values[0])
+		if not len(value):
+			self.log("could not find ${%s:%s} or result is empty string"%(param,expn))
+		else:
+			self.log("substituted ${%s:%s} with %s"%(param,expn,value))
+		return value
+	def subst(self,text):
+		count=1
+		while count>0:
+			text,count=re.subn(
+					r"(?msux)(?#turn on multiline, enable comments,"
+					r"allow . to match anything, enable unicode support)"
+					r"(?#match leading ${)\$\{"
+					r"(?#optional expansion flags)(?P<flags>\([^\)]*\))?"
+					r"(?#parameter name to expand)(?P<param>[^$:{}\[\]]*)"
+					r"(?#optional subscript index)(?P<index>\["
+					r"(?#optional subscript flags)(?P<sflag>\([^\)]*\))?"
+					r"(?#close optional subscript)[^\]]*\])?"
+					r"(?#optional expansion modes)(:(?P<expn>[^${}]*))?"
+					r"(?#match trailing })\}", self.submatch, text)
+		return text
 
-class TemplateEngine():
+class XTPTemplateEngine(XTPLogger):
 	noindent=["link","img","input","meta","br"]
+	autoclose=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
 	xtptags=["template","foreach","parm"]
-	__statelist__=[
+	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
+		self.__auto__=XTPAutoGeneric(self,["render_xtp"])
+		self.__stack__=XTPAutoStack(self,[
 			"_kwargs",
 			"_attrs",
 			"_buffer",
@@ -144,10 +190,7 @@ class TemplateEngine():
 			"_templates",
 			"_opentag",
 			"_parser",
-			]
-	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
-		self.__auto__=XTPAutoGeneric(self,["render_xtp"])
-		self.__stack__=XTPAutoStack(self,self.__statelist__)
+			])
 		self._buffer=''
 		self._indent=0
 		self._opentag=['',[]]
@@ -159,8 +202,6 @@ class TemplateEngine():
 		self._indentby=' '
 		self._stack=[]
 		self._parser=None
-	def log(*args,**kwargs):
-		pass
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
 		self._template=template
@@ -201,49 +242,9 @@ class TemplateEngine():
 		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
 		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)
-	def submatch(self,match):
-		return self.expand(**match.groupdict())
-	def expand(self,param,flags=None,index=None,sflag=None,expn=None):
-		value=''
-		values=dfind(param,[self._attrs,self._kwargs])
-		if expn and len(expn)>0:
-			mode=expn[0]
-			data=expn[1:]
-		else:
-			mode=''
-			data=''
-		if len(values)==0:
-			if mode=='-':
-				value=data
-			elif mode=='|':
-				value=self.subst('${'+data+'}')
-		else:
-			if mode=='+':
-				value=data
-			elif mode=='.':
-				value=data.join(map(str,values))
-			else:
-				value=str(values[0])
-		if not len(value):
-			self.log("could not find ${%s:%s} or result is empty string"%(param,expn))
-		else:
-			self.log("substituted ${%s:%s} with %s"%(param,expn,value))
-		return value
+
 	def subst(self,text):
-		count=1
-		while count>0:
-			text,count=re.subn(
-					r"(?msux)(?#turn on multiline, enable comments,"
-					r"allow . to match anything, enable unicode support)"
-					r"(?#match leading ${)\$\{"
-					r"(?#optional expansion flags)(?P<flags>\([^\)]*\))?"
-					r"(?#parameter name to expand)(?P<param>[^$:{}\[\]]*)"
-					r"(?#optional subscript index)(?P<index>\["
-					r"(?#optional subscript flags)(?P<sflag>\([^\)]*\))?"
-					r"(?#close optional subscript)[^\]]*\])?"
-					r"(?#optional expansion modes)(:(?P<expn>[^${}]*))?"
-					r"(?#match trailing })\}", self.submatch, text)
-		return text
+		return XTPExpansion([self._attrs,self._kwargs]).subst(text)
 
 	def indent(self,data):
 		return ''.join([
@@ -257,8 +258,10 @@ class TemplateEngine():
 				self._buffer+=''+line+'\n'
 	def render_attrs(self,attrs):
 		return ["%s='%s'"%(name,value) for (name,value) in attrs if value is not None]
-	def render_tag(self,tag,attrs):
-		return " ".join([tag]+self.render_attrs(attrs))
+	def render_tag(self,tag,attrs,endtag=False,startendtag=False):
+		return self.indent("<%s%s%s>"%("/" if endtag else "",
+				tag if endtag else " ".join([tag]+self.render_attrs(attrs)),
+				" /" if startendtag else ""))
 
 	def parm(self,name):
 		return dfind(name,[self._attrs,self._kwargs],'No such parameter: %s')[0]
@@ -272,7 +275,7 @@ class TemplateEngine():
 	def render_xtp_parm(self,tag,attrs):
 		return self.parm(dfind('name',[attrs])[0])
 	def render_startendtag(self,tag,attrs):
-		return self.indent("<%s />"%self.render_tag(tag,attrs))
+		return self.render_tag(tag,attrs,startendtag=True)
 	
 	def handle_pop_pre(self,ret=None):
 		self._parser.close()
@@ -300,7 +303,7 @@ class TemplateEngine():
 			self._opentag=(tag,attrs)
 			self.push()
 		else:
-			self.append(self.indent("<%s>"%self.render_tag(tag,attrs)))
+			self.append(self.render_tag(tag,attrs,startendtag=(tag in self.autoclose)))
 			if tag not in self.noindent:
 				self._indent+=1
 	def handle_endtag(self,tag):
@@ -311,7 +314,8 @@ class TemplateEngine():
 		else:
 			if tag not in self.noindent:
 				self._indent-=1
-			self.append(self.indent("</%s>"%tag))
+			if tag not in self.autoclose:
+				self.append(self.render_tag(tag,[],endtag=True))
 	def handle_data(self,data):
 		self.append(self.indent(data))
 	def handle_comment(self,comment):
@@ -341,7 +345,7 @@ class TemplateParser(HTMLParser):
 
 def render_file(filename):
 	sitemodule = import_module(filename)
-	xtp = TemplateEngine(templates=sitemodule.templates,
+	xtp = XTPTemplateEngine(templates=sitemodule.templates,
 			__all_data__=sitemodule.data,__all_pages__=sitemodule.pages)
 	for target,config in sitemodule.pages.items():
 		pagedata={}
