@@ -173,7 +173,7 @@ class XTPExpansion(XTPLogger):
 					r"(?#match trailing })\}", self.submatch, text)
 		return text
 
-class XTPTemplateEngine(XTPLogger):
+class XTP(XTPLogger):
 	noindent=["link","img","input","meta","br"]
 	autoclose=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
@@ -286,7 +286,7 @@ class XTPTemplateEngine(XTPLogger):
 	def handle_push_pre(self,ret=None):
 		return ret
 	def handle_push(self,ret=None):
-		self._parser=TemplateParser(self)
+		self._parser=XTPParser(self)
 		self._buffer=''
 		return ret
 	
@@ -327,7 +327,7 @@ class XTPTemplateEngine(XTPLogger):
 	def unknown_decl(self,decl):
 		self.append(self.indent("<![%s]>"%decl))
 
-class TemplateParser(HTMLParser):
+class XTPParser(HTMLParser):
 	def __init__(self,engine):
 		super().__init__(convert_charrefs=False)
 		self._engine=engine
@@ -345,7 +345,7 @@ class TemplateParser(HTMLParser):
 
 def render_file(filename):
 	sitemodule = import_module(filename)
-	xtp = XTPTemplateEngine(templates=sitemodule.templates,
+	xtp = XTP(templates=sitemodule.templates,
 			__all_data__=sitemodule.data,__all_pages__=sitemodule.pages)
 	for target,config in sitemodule.pages.items():
 		pagedata={}
