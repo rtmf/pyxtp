@@ -246,7 +246,7 @@ templates = {
 					<input type="hidden" name="tax_rate" value="${tax:-0.00}">
 					<input type="hidden" name="shipping" value="${shipping:-0.00}">
 					<input type="hidden" name="bn" value="PP-BuyNowBF::NonHostedGuest">
-					<button type="submit" class="btn btn-large" border="0" name="buy-${name}" alt="PayPal - The safer, easier way to pay online!">buy</button>
+					<button type="submit" class="btn btn-large" name="buy-${name}" >buy</button>
 					${_}
 				</form>
 			""",
@@ -260,7 +260,7 @@ templates = {
 				<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 			""",
 			"html"		  : """
-				<template name="html-for-ie" />
+				<!--<template name="html-for-ie" />-->
 				<html lang="en">
 					${_}
 				</html>
@@ -326,7 +326,7 @@ templates = {
 				</section>
 			""",
 			"item"		: """
-				<li class="${class}" name="${name}">
+				<li class="${class}" id="item-${name}">
 					<div class="single-product">
 						<a href="${link}">
 							<img alt="${title}" src="img/products/${name}.jpeg">	
@@ -381,8 +381,8 @@ templates = {
 			"menu"		: """
 				<header id="header">
 					<div class="header-content clearfix">
-						<a class="logo" href="http://robots-everywhere.com/re_site/"><img  src="img/robots-everywhere.png"> <span>ROBOTS EVERYWHERE</span></a>
-						<nav class="navigation" role="navigation">
+						<a class="logo" href="http://robots-everywhere.com/re_site/"><img alt="logo" src="img/robots-everywhere.png"> <span>ROBOTS EVERYWHERE</span></a>
+						<nav class="navigation">
 							<ul class="primary-nav">
 								<foreach subtemp="first" sublist="yes" name="menuitem" list="menu" />
 							</ul>
@@ -405,21 +405,21 @@ templates = {
 					<h2>Contact us</h2>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quam quam, commodo nec lacinia id, volutpat fermentum tortor.</p>
 					<div id="contact_form">
-						<form id="formcontact" class="cbp-mc-form" action="" name="contact"><!-- name="emailform" -->
+						<form id="formcontact" class="cbp-mc-form" action="#" name="contact"><!-- name="emailform" -->
 							<div class="cbp-mc-column">
-								<label for="first_name">Name</label>
-								<input id="nomeinput" name="name" placeholder="Noel" type="text"><!--id="first_name"-->
-								<label class="error" for="name" id="name_error" style="display: none;">Your name is required.</label>
+								<label for="nameinput">Name</label>
+								<input id="nameinput" name="name" placeholder="Noel" type="text"><!--id="first_name"-->
+								<label class="error" for="nameinput" id="name_error" style="display: none;">Your name is required.</label>
 
-								<label for="email">Email</label>
+								<label for="emailinput">Email</label>
 								<input id="emailinput" name="email" placeholder="noel.doe@gmail.com" type="text"><!--id="email"-->
-								<label class="error" for="email" id="email_error" style="display: none;">Your email is required.</label>
-															<label class="error" for="email" id="email_valid" style="display: none;">Your email is not valid.</label>
+								<label class="error" for="emailinput" id="email_error" style="display: none;">Your email is required.</label>
+															<label class="error" for="emailinput" id="email_valid" style="display: none;">Your email is not valid.</label>
 
 								<input class="trick" id="checkinput" name="check" placeholder="" type="text">
-								<label class="error" for="check" id="trick_error" style="display: none;">You're a bot || SPAM.</label>
+								<label class="error" for="checkinput" id="trick_error" style="display: none;">You're a bot || SPAM.</label>
 
-								<label for="msg">Any questions?</label>
+								<label for="msginput">Any questions?</label>
 								<textarea id="msginput" name="msg"></textarea><!--id="msg"-->
 							</div><!-- .cbp-mc-column -->
 							<div class="cbp-mc-submit-wrap">
@@ -436,7 +436,7 @@ templates = {
 							<div class="col-md-5 col-lg-5">
 								<div class="brand">
 									<div class="logo-footer">
-										<img src="img/robots-everywhere-footer.png">
+										<img alt="footer" src="img/robots-everywhere-footer.png">
 									</div><!-- .logo-footer -->
 									<div class="content-footer">
 										<span>Robots Everywhere</span><br>
