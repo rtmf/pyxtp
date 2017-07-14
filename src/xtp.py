@@ -4,11 +4,137 @@ import re
 from html.parser import HTMLParser
 from html.entities import html5 as entities, name2codepoint as characters
 import types
+def dfind(name,dicts,error=None):
+	ret=[]
+	for assoc in dicts:
+		if type(assoc)==dict:
+			if name in assoc:
+				ret.append(assoc[name])
+		elif type(assoc)==list:
+			for val in [val for (key,val) in assoc if key==name]:
+				ret.append(val)
+	if len(ret)==0 and error is not None:
+		raise Exception(error%name)
+	else:
+		return ret
+class XTPExpansion():
+	def __init__(self):
+		pass
+
+class XTPLogger():
+	def log(self,foo):
+		from sys import stderr
+		stderr.write("%s\n"%foo)
+		stderr.flush()
+
+class XTPClassManipulator():
+	def addmethod(self,func,name,target=None,source=None):
+		setattr(target if target is not None else self,name,self.bindfunc(func,
+			source if source is not None else target))
+	def bindfunc(self,func,target=None):
+		return types.MethodType(func,target if target is not None else self)
+	def callifexists(self,target,name,error=None,ret=None,*args,**kwargs):
+		if name in dir(target):
+			return getattr(target,name)(*args,ret=ret,**kwargs)
+		elif error is not None:
+			error(target,*args,ret=ret,**kwargs)
+			return ret
+
+class XTPAutoGeneric(XTPClassManipulator,XTPLogger):
+	def __init__(self,target,generics=[]):
+		self.__generic_target__=target
+		self._genfuncs=list(map(self.generic,generics))
+	def generic(self,generic):
+		listname,funclist=self.genlist(generic)
+		generr=self.addgenerr(generic)
+		self.addmethod(self.getgenfunc(generic,generr,listname),generic,self.__generic_target__)
+		return(generic,generr)
+	def getgenfunc(self,generic,generr,listname):
+		autogen=self
+		return (lambda self,child,alt,*args,**kwargs:
+			([funclist[child]  for funclist in
+				[getattr(autogen.__generic_target__,listname)]
+				if child in funclist] + [
+					alt if alt is not None else getattr(self,generr)]
+				)[0](*args, **kwargs))
+	def addgenerr(self,generic):
+		generr='generic_error__'+generic
+		self.addmethod(self.getgenerr(generic),generr,self.__generic_target__)
+		return generr
+	def getgenerr(self,generic):
+		autogen=self
+		return (lambda self,child,**kwargs:
+				(autogen.log('No alt, no impl, generic:%s, child:%s'%(generic,child))
+				and None))
+	def genlist(self,generic):
+		listname='_%s__funcs'%generic
+		if listname not in dir(self.__generic_target__):
+			setattr(self.__generic_target__,listname,{ impl.__name__[len(generic)+1:] : impl for impl in
+				[ func for func in [
+					getattr(self.__generic_target__,name) for name in dir(self.__generic_target__)
+					if name.startswith(generic+'_')
+					] if type(func).__name__=='method' ] })
+		print(listname,getattr(self.__generic_target__,listname))
+		return listname,getattr(self.__generic_target__,listname)
+
+class XTPAutoHandlers(XTPClassManipulator,XTPLogger):
+	def __init__(self,source,target,funcs):
+		self.__auto_source__=source
+		self.__auto_target__=target
+		for func,base in [(func,"handle_%s"%func) for func in funcs]:
+			self.addmethod(self.genhandler(base),func,source,source)
+			self.addmethod(self.genhandler(base),func,target,target)
+	def handlermissing(self,obj,func):
+		return lambda self,*args,ret=None,**kwargs: self.log(
+				"Could not find function %s on %s object."%(func,obj)) and ret
+	def callmethod(self,func,ret=None,*args,**kwargs):
+		return self.callifexists(
+				target=self.__auto_target__,name=func,error=self.handlermissing("target",func),*args,**kwargs,ret=
+				self.callifexists(target=self.__auto_source__,name=func,error=self.handlermissing("source",func),
+					*args,**kwargs,ret=ret))
+	def genhandler(self,func):
+		autohandler=self
+		return (lambda self,*args,ret=None,**kwargs:
+				autohandler.callmethod(func,*args,**kwargs,ret=
+					autohandler.callmethod("%s_pre"%func,*args,**kwargs,ret=ret)))
+
+class XTPAutoStack(XTPLogger,XTPClassManipulator):
+	__statelist__=[]
+	__stack__=[]
+	def __init__(self,target,statelist=[]):
+		self.__stack_target__=target
+		self.__statelist__=statelist
+		self.__autogeneric__=XTPAutoGeneric(self,["set","get"])
+		self.__handlers__=XTPAutoHandlers(self,target,["push","pop"])
+	def handle_push_pre(self,ret=None):
+		return ret
+	def handle_pop_pre(self,ret=None):
+		return ret
+	def handle_push(self,ret=None,statelist=[]):
+		self.__stack__.append(self.state(statelist+self.__statelist__))
+		return ret
+	def handle_pop(self,ret=None):
+		for attr,value in self.__stack__.pop().items():
+			self.set(type(attr).__name__,self.bindfunc(setattr,self.__stack_target__),attr,value)
+		return ret
+	def get_list(self,attr):
+		return {*getattr(self.__stack_target__,attr)}
+	def set_list(self,attr,value):
+		setattr(self.__stack_target__,{*value})
+	def get_dict(self,attr):
+		return {**getattr(self.__stack_target__,attr)}
+	def set_dict(self,attr,value):
+		setattr(self.__stack_target__,{**value})
+	def state(self,statelist=[]):
+		return {attr: self.get(type(attr).__name__,self.bindfunc(getattr,self.__stack_target__),attr)
+			for attr in statelist+self.__statelist__}
+
+
 class TemplateEngine():
 	noindent=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
 	xtptags=["template","foreach","parm"]
-	statelist=[
+	__statelist__=[
 			"_kwargs",
 			"_attrs",
 			"_buffer",
@@ -19,12 +145,9 @@ class TemplateEngine():
 			"_opentag",
 			"_parser",
 			]
-	generics=[
-			"render_xtp",
-			"get",
-			"set",
-			]
 	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
+		self.__auto__=XTPAutoGeneric(self,["render_xtp"])
+		self.__stack__=XTPAutoStack(self,self.__statelist__)
 		self._buffer=''
 		self._indent=0
 		self._opentag=['',[]]
@@ -35,38 +158,9 @@ class TemplateEngine():
 		self._attrs=attrs
 		self._indentby=' '
 		self._stack=[]
-		self._genfuncs=list(map(self.generic,self.generics))
 		self._parser=None
 	def log(*args,**kwargs):
 		pass
-	def generic(self,generic):
-		listname,funclist=self.genlist(generic)
-		generr='generic_error__'+generic
-		self.addmethod((lambda self,child,**kwargs:
-				self.log('No alt, no impl, generic:%s, child:%s'%(generic,child))
-				and None),generr)
-		self.addmethod(lambda self,child,alt,*args,**kwargs:
-				([funclist[child]  for funclist in
-					[getattr(self,listname)]
-					if child in funclist] + [
-				alt if alt is not None else getattr(self,generr)]
-					)[0](*args, **kwargs),
-				generic)
-		return(generic,generr)
-	def addmethod(self,func,name):
-		setattr(self,name,self.bindfunc(func))
-	def bindfunc(self,func):
-		return types.MethodType(func,self)
-	def genlist(self,generic):
-		listname='_'+generic+'__funcs'
-		if listname not in dir(self):
-			setattr(self,listname,{ impl.__name__[len(generic)+1:] : impl for impl in
-				[ func for func in [
-					getattr(self,name) for name in dir(self)
-					if name.startswith(generic+'_')
-					] if type(func).__name__=='method' ] })
-		return listname,getattr(self,listname)
-
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
 		self._template=template
@@ -111,7 +205,7 @@ class TemplateEngine():
 		return self.expand(**match.groupdict())
 	def expand(self,param,flags=None,index=None,sflag=None,expn=None):
 		value=''
-		values=self.dfind(param,[self._attrs,self._kwargs])
+		values=dfind(param,[self._attrs,self._kwargs])
 		if expn and len(expn)>0:
 			mode=expn[0]
 			data=expn[1:]
@@ -165,59 +259,40 @@ class TemplateEngine():
 		return ["%s='%s'"%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs):
 		return " ".join([tag]+self.render_attrs(attrs))
-	def dfind(self,name,dicts,error=None):
-		ret=[]
-		for assoc in dicts:
-			if type(assoc)==dict:
-				if name in assoc:
-					ret.append(assoc[name])
-			elif type(assoc)==list:
-				for val in [val for (key,val) in assoc if key==name]:
-					ret.append(val)
-		if len(ret)==0 and error is not None:
-			raise Exception(error%name)
-		else:
-			return ret
+
 	def parm(self,name):
-		return self.dfind(name,[self._attrs,self._kwargs],'No such parameter: %s')[0]
+		return dfind(name,[self._attrs,self._kwargs],'No such parameter: %s')[0]
 	def attr(self,name):
-		return self.dfind(name,[self._attrs])
+		return dfind(name,[self._attrs])
 	
 	def render_xtp_template(self,tag,attrs):
-		return self.render(self.dfind('name',[attrs])[0],attrs=attrs)
+		return self.render(dfind('name',[attrs])[0],attrs=attrs)
 	def render_xtp_foreach(self,tag,attrs):
-		return self.render(self.dfind('name',[attrs])[0],attrs=attrs,iterlist=self.parm(self.dfind('list',[attrs])[0]))
+		return self.render(dfind('name',[attrs])[0],attrs=attrs,iterlist=self.parm(dfind('list',[attrs])[0]))
 	def render_xtp_parm(self,tag,attrs):
-		return self.parm(self.dfind('name',[attrs])[0])
+		return self.parm(dfind('name',[attrs])[0])
 	def render_startendtag(self,tag,attrs):
 		return self.indent("<%s />"%self.render_tag(tag,attrs))
-	def get_list(self,attr):
-		return {*getattr(self,attr)}
-	def set_list(self,attr,value):
-		setattr(self,{*value})
-	def get_dict(self,attr):
-		return {**getattr(self,attr)}
-	def set_dict(self,attr,value):
-		setattr(self,{**value})
-	def state(self,statelist=[]):
-		return {attr: self.get(type(attr).__name__,self.bindfunc(getattr),attr)
-			for attr in statelist+self.statelist}
-	def push(self,statelist=[]):
-		self._stack.append(self.state())
+	
+	def handle_pop_pre(self,ret=None):
+		self._parser.close()
+		return self._buffer
+	def handle_pop(self,ret=None):
+		return ret
+
+	def handle_push_pre(self,ret=None):
+		return ret
+	def handle_push(self,ret=None):
 		self._parser=TemplateParser(self)
 		self._buffer=''
-	def pop(self):
-		self._parser.close()
-		result=self._buffer
-		for attr,value in self._stack.pop().items():
-			self.set(type(attr).__name__,self.bindfunc(setattr),attr,value)
-		return result
+		return ret
+	
 	def handle_comment(self,data):
 		self.append(self.indent('<!--%s-->'%data))
 	def handle_entityref(self,name):
-		self.append(''.join(self.dfind(name,[self._attrs,self._kwargs,entities])))
+		self.append(''.join(dfind(name,[self._attrs,self._kwargs,entities])))
 	def handle_charref(self,name):
-		self.append(''.join(self.dfind(name,[self._attrs,self._kwargs,characters])))
+		self.append(''.join(dfind(name,[self._attrs,self._kwargs,characters])))
 	def handle_startendtag(self,tag,attrs):
 		self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs))
 	def handle_starttag(self,tag,attrs):
@@ -260,10 +335,7 @@ class TemplateParser(HTMLParser):
 #					self.log(args) and self.log(kwargs) and
 #					self.log(handler) and self.log(handled) and
 #					handled(*args,**kwargs))),handler)
-	def addmethod(self,func,name):
-		setattr(self,name,self.bindfunc(func))
-	def bindfunc(self,func):
-		return types.MethodType(func,self)
+
 	def feed(self,data):
 		super().feed(data)
 
