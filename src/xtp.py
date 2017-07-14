@@ -47,10 +47,9 @@ class XTPAutoGeneric(XTPClassManipulator,XTPLogger):
 		self.addmethod(self.getgenfunc(generic,generr,listname),generic,self.__generic_target__)
 		return(generic,generr)
 	def getgenfunc(self,generic,generr,listname):
-		autogen=self
 		return (lambda self,child,alt,*args,**kwargs:
 			([funclist[child]  for funclist in
-				[getattr(autogen.__generic_target__,listname)]
+				[getattr(self,listname)]
 				if child in funclist] + [
 					alt if alt is not None else getattr(self,generr)]
 				)[0](*args, **kwargs))
@@ -102,7 +101,10 @@ class XTPAutoStack(XTPLogger,XTPClassManipulator):
 		self.__stack_target__=target
 		self.__statelist__=statelist
 		self.__autogeneric__=XTPAutoGeneric(self,["set","get"])
-		self.__handlers__=XTPAutoHandlers(self,target,["push","pop"])
+		self.__handlers__=XTPAutoHandlers(self,self.__stack_target__,["push","pop"])
+		self.addmethod(self.depth,"depth",self.__stack_target__)
+	def depth(self,other):
+		return len(self.__stack__)
 	def handle_push_pre(self,ret=None):
 		return ret
 	def handle_pop_pre(self,ret=None):
@@ -177,7 +179,6 @@ class XTP(XTPLogger):
 	noindent=["link","img","input","meta","br"]
 	autoclose=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
-	xtptags=["template","foreach","parm"]
 	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
 		self.__auto__=XTPAutoGeneric(self,["render_xtp"])
 		self.__stack__=XTPAutoStack(self,[
@@ -200,7 +201,6 @@ class XTP(XTPLogger):
 		self._template=template
 		self._attrs=attrs
 		self._indentby=' '
-		self._stack=[]
 		self._parser=None
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
@@ -209,11 +209,12 @@ class XTP(XTPLogger):
 		self._attrs=attrs
 		self._template=template
 		self._buffer=''
+		depth=self.depth()
 		if iterlist is None:
 			if self._template in self._templates:
 				self._parser.feed(self.subst(self._templates[self._template]))
 			else:
-				raise Exception('No such template: %s'%name)
+				raise Exception('No such template: %s'%self._template)
 		else:
 			for iteritem in iterlist:
 				if type(iteritem)==dict:
@@ -239,6 +240,8 @@ class XTP(XTPLogger):
 					else:
 						raise(Exception('Sublist passed instead of dict but sublist is not enabled!'))
 		self._parser.close()
+		if (depth!=self.depth()):
+			raise Exception('Error in template: %s (child not closed properly)'%template)
 		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
 		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)

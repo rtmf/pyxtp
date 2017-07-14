@@ -260,7 +260,7 @@ templates = {
 				<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 			""",
 			"html"		  : """
-				<template name="html-for-ie">
+				<template name="html-for-ie" />
 				<html lang="en">
 					${_}
 				</html>
