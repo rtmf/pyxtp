@@ -260,7 +260,8 @@ templates = {
 				<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 			""",
 			"html"		  : """
-				<html>
+				<template name="html-for-ie">
+				<html lang="en">
 					${_}
 				</html>
 			""",
@@ -328,7 +329,7 @@ templates = {
 				<li class="${class}" name="${name}">
 					<div class="single-product">
 						<a href="${link}">
-							<img src="img/products/${name}.jpeg">	
+							<img alt="${title}" src="img/products/${name}.jpeg">	
 						</a>
 					</div> <!-- .single-product -->
 					<div class="info">
