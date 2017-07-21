@@ -1,6 +1,6 @@
 ROOT := $(PWD)
 
-SITES := resite
+SITES := resite resume
 
 BUILD := $(PWD)/build
 
@@ -24,5 +24,3 @@ $(BUILD):
 $(SUBDIRS): $(BUILD) $(PYXTP)
 	$(MAKE) -C $@ all SUBDIR=$(ROOT)/$@
 
-resume.fodt: $(PYXTP) resume.py
-	$(PYXTP) resume.py

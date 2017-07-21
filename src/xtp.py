@@ -20,9 +20,10 @@ def dfind(name,dicts,error=None):
 
 class XTPLogger():
 	def log(self,foo):
-		from sys import stderr
-		stderr.write("%s\n"%foo)
-		stderr.flush()
+		pass
+		#from sys import stderr
+		#stderr.write("%s\n"%foo)
+		#stderr.flush()
 
 class XTPClassManipulator():
 	def addmethod(self,func,name,target=None,source=None):
@@ -70,7 +71,7 @@ class XTPAutoGeneric(XTPClassManipulator,XTPLogger):
 					getattr(self.__generic_target__,name) for name in dir(self.__generic_target__)
 					if name.startswith(generic+'_')
 					] if type(func).__name__=='method' ] })
-		print(listname,getattr(self.__generic_target__,listname))
+		#print(listname,getattr(self.__generic_target__,listname))
 		return listname,getattr(self.__generic_target__,listname)
 
 class XTPAutoHandlers(XTPClassManipulator,XTPLogger):
@@ -380,6 +381,6 @@ def import_module(filename):
 
 if __name__=='__main__':
 	import sys
-	print(sys.argv)
+	#print(sys.argv)
 	for filename in sys.argv[1:]:
 		render_file(filename)
