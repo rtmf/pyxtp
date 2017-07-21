@@ -13,7 +13,7 @@ SUBDIRS=$(SITES)
 
 .PHONY: $(SUBDIRS)
 
-all: $(BUILD) $(SUBDIRS)
+all: $(BUILD) $(SUBDIRS) resume.fodt
 
 clean: 
 	rm -rf $(BUILD)
@@ -23,3 +23,6 @@ $(BUILD):
 
 $(SUBDIRS): $(BUILD) $(PYXTP)
 	$(MAKE) -C $@ all SUBDIR=$(ROOT)/$@
+
+resume.fodt: $(PYXTP) resume.py
+	$(PYXTP) resume.py

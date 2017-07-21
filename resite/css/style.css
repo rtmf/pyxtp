@@ -135,7 +135,7 @@ div{
   padding-left:20px;
 }
 
-.logo,{
+.logo{
   font-size:1.3em;
 }
 
@@ -238,7 +238,7 @@ nav.open > ul.primary-nav > li.menu-tendina > a:after{
   right: 25%; /*15em*/
   background: url("../img/freccia.svg") no-repeat center center;
   background-size: 8px 11px;
-  -webkit-transition-property: 
+  -webkit-transition-property: none;
 }
 
 nav.open > ul.primary-nav > li.menu-tendina > a.open-sub:after{
@@ -1091,9 +1091,9 @@ footer a{
   text-transform: none;
 }
 
-footer ul li.social.{
-  /*display:none;*/
-}
+/*footer ul li.social.{
+  display:none;
+}*/
 
 footer ul li.icon-2x{
   display:none;
@@ -1517,7 +1517,6 @@ footer ul li.social a:hover{
     -moz-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
-    appearance: none;
     border: none;
     margin-top: 5.5%;
     padding: .8em 3em;
@@ -1944,13 +1943,15 @@ input:-webkit-autofill {
 
 @media screen and (max-width: 1100px){
   .logo img{
-  width: 16%; !important}
+  	width: 16% !important;
+	}
 
   .logo{
-  font-size: 1.3em; !important}
+  	font-size: 1.3em !important;
+	}
 
-  .navigation{
-  /*margin-top: 1.5%;*/}
+  /*.navigation{
+  margin-top: 1.5%;}*/
 
 }
 

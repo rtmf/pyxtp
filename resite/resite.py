@@ -439,7 +439,9 @@ templates = {
 										<img alt="footer" src="img/robots-everywhere-footer.png">
 									</div><!-- .logo-footer -->
 									<div class="content-footer">
-										<span>Robots Everywhere</span><br>
+										<span>Robots Everywhere</span>
+										<template name="validation" />
+										<br>
 										Lorem ispsum lorem ipsum lorem ipsum lorem 
 			ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem 
 			ipsum lorem ipsum.
@@ -464,5 +466,17 @@ templates = {
 					</div><!-- .container -->
 				</footer>
 			""",
+			"validation":"""
+					<a style="margin:0;border:0;padding:0" href="http://validator.w3.org/check/referer">
+						<img style="margin:0;border:0;padding:0;width:88px;height:31px"
+							src="http://tymestl.org/~rtmf/images/valid-html5-blue.svg"
+							alt="Valid HTML5!" />
+					</a>
+					<a style="margin:0;border:0;padding:0" href="http://jigsaw.w3.org/css-validator/check/referer">
+						<img style="margin:0;border:0;padding:0;width:88px;height:31px"
+							src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+							alt="Valid CSS!" />
+					</a>
+			"""
 	}
 

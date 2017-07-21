@@ -210,12 +210,20 @@ class XTP(XTPLogger):
 		self._template=template
 		self._buffer=''
 		depth=self.depth()
+
 		if iterlist is None:
 			if self._template in self._templates:
 				self._parser.feed(self.subst(self._templates[self._template]))
 			else:
 				raise Exception('No such template: %s'%self._template)
 		else:
+			stride=self.attr('stride')
+			if len(stride) and int(stride[0])>0:
+				curlist=[]
+				while len(iterlist):
+					curlist+=[iterlist[0:int(stride[0])]]
+					iterlist=iterlist[int(stride[0]):]
+				iterlist=curlist
 			for iteritem in iterlist:
 				if type(iteritem)==dict:
 					self.append(self.render(self._template,**iteritem))
@@ -223,7 +231,7 @@ class XTP(XTPLogger):
 					subtemp=self.attr('subtemp')
 					sublist=self.attr('sublist')
 					if len(sublist)==0 or sublist[0].lower() in self.truthy:
-						subitem=None
+						subitem={}
 						itersublist=iteritem
 						if len(subtemp)==0:
 							template=self._template
@@ -244,7 +252,8 @@ class XTP(XTPLogger):
 			raise Exception('Error in template: %s (child not closed properly)'%template)
 		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
-		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)
+		return self.indent(data)
+#		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)
 
 	def subst(self,text):
 		return XTPExpansion([self._attrs,self._kwargs]).subst(text)
@@ -260,7 +269,7 @@ class XTP(XTPLogger):
 			if line.strip() != '':
 				self._buffer+=''+line+'\n'
 	def render_attrs(self,attrs):
-		return ["%s='%s'"%(name,value) for (name,value) in attrs if value is not None]
+		return ['%s="%s"'%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs,endtag=False,startendtag=False):
 		return self.indent("<%s%s%s>"%("/" if endtag else "",
 				tag if endtag else " ".join([tag]+self.render_attrs(attrs)),
