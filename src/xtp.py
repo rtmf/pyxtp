@@ -6,18 +6,13 @@ from html.entities import html5 as entities, name2codepoint as characters
 import types
 def dfind(name,dicts,error=None):
 	ret=[]
-	if type(name)==list:
-		for search in name:
-			for assoc in dfind(search,dicts,error):
-				ret.append(assoc)
-	else:
-		for assoc in dicts:
-			if type(assoc)==dict:
-				if name in assoc:
-					ret.append(assoc[name])
-			elif type(assoc)==list:
-				for val in [val for (key,val) in assoc if key==name]:
-					ret.append(val)
+	for assoc in dicts:
+		if type(assoc)==dict:
+			if name in assoc:
+				ret.append(assoc[name])
+		elif type(assoc)==list:
+			for val in [val for (key,val) in assoc if key==name]:
+				ret.append(val)
 	if len(ret)==0 and error is not None:
 		raise Exception(error%name)
 	else:
@@ -151,10 +146,6 @@ class XTPExpansion(XTPLogger):
 				value=expn.join(map(str,values))
 			else:
 				value=str(values[0])
-		if not len(value):
-			self.log("could not find %s or result is empty string"%(everything))
-		#else:
-		#	self.log("substituted %s with %s"%(everything,value))
 		return value
 	def subst(self,text):
 		count=1
@@ -168,17 +159,15 @@ class XTPExpansion(XTPLogger):
 					r"(?#optional subscript index)(?P<index>\["
 					r"(?#optional subscript flags)(?P<sflag>\([^\)]*\))?"
 					r"(?#close optional subscript)[^\]]*\])?"
-					r"(?#optional expansion modes)(:(?P<mode>[.+-])(?P<expn>[^${}]*))?"
+					r"(?#optional expansion modes)(:(?P<mode>[.+-]{1})(?P<expn>[^${}]*))?"
 					r"(?#optional alternate modes)(:(?P<trinary>\?)(?P<true>[^${}\|]*)\|(?P<false>[^${}]*))?"
 					r"(?#match trailing })\})", self.submatch, text)
 		return text
-
 class XTP(XTPLogger):
 	noindent=["link","img","input","meta","br"]
 	autoclose=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
 	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
-		self.__auto__=XTPAutoGeneric(self,["render_xtp"])
 		self.__stack__=XTPAutoStack(self,[
 			"_kwargs",
 			"_attrs",
@@ -202,12 +191,10 @@ class XTP(XTPLogger):
 		self._parser=None
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
-		self.open()
 		self._template=template
 		self._kwargs={**self._kwargs,**kwargs}
 		self._attrs=attrs
 		self._template=template
-		self._buffer=''
 		depth=self.depth()
 		if iterlist is None:
 			if self._template in self._templates:
@@ -215,7 +202,7 @@ class XTP(XTPLogger):
 			else:
 				raise Exception('No such template: %s'%self._template)
 		else:
-			stride=self.attr('stride')
+			stride=self.attr('_#_',head=False)
 			if len(stride) and int(stride[0])>0:
 				curlist=[]
 				while len(iterlist):
@@ -224,10 +211,10 @@ class XTP(XTPLogger):
 				iterlist=curlist
 			for iteritem in iterlist:
 				if type(iteritem)==dict:
-					self.append(self.render(self._template,**iteritem))
+					self.append(self.render(self._template,attrs=list(iteritem.items())))
 				elif type(iteritem)==list:
-					subtemp=self.attr('subtemp')
-					sublist=self.attr('sublist')
+					subtemp=self.attr('_:_',head=False)
+					sublist=self.attr('___',head=False)
 					if len(sublist)==0 or sublist[0].lower() in self.truthy:
 						subitem={}
 						itersublist=iteritem
@@ -242,21 +229,18 @@ class XTP(XTPLogger):
 							else:
 								template=subtemp
 						subitem['template']=template
-						self.append(self.render(**subitem,iterlist=None,itersublist=itersublist,attrs=self._attrs))
+						self.append(self.render(**subitem,iterlist=None,___=itersublist,attrs=self._attrs))
 					else:
 						raise(Exception('Sublist passed instead of dict but sublist is not enabled!'))
-		self.close()
-		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
-	def open(self):
-		self._parser=XTPParser(self)
-		self._buffer=''
-	def close(self):
-		depth=self.depth()
+				else:
+					self.append(self.render(self._template,__=iteritem))
 		self._parser.close()
 		if (depth!=self.depth()):
 			raise Exception('Error in template: %s (child not closed properly)'%template)
+		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
-		return self.indent(data)
+		return data
+		return self.render_comment(name+"::enter")+data+self.render_comment(name+"::leave")
 	def subst(self,text):
 		return XTPExpansion([self._attrs,self._kwargs]).subst(text)
 	def indent(self,data):
@@ -272,29 +256,42 @@ class XTP(XTPLogger):
 	def render_attrs(self,attrs):
 		return ['%s="%s"'%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs,endtag=False,startendtag=False):
-		startendtag=startendtag or (tag in self.autoclose)
 		return self.indent("<%s%s%s>"%("/" if endtag else "",
 				tag if endtag else " ".join([tag]+self.render_attrs(attrs)),
 				" /" if startendtag else ""))
-	def parm(self,name):
-		return dfind(name,[self._attrs,self._kwargs],'No such parameter: %s')[0]
-	def attr(self,name):
-		return dfind(name,[self._attrs])
-	def render_xtp_template(self,tag,attrs):
-		return self.render(dfind('name',[attrs])[0],attrs=attrs)
-	def render_xtp_foreach(self,tag,attrs):
-		return self.render(dfind('name',[attrs])[0],attrs=attrs,iterlist=self.parm(dfind('list',[attrs])[0]))
-	def render_xtp_parm(self,tag,attrs):
-		return self.parm(dfind('name',[attrs])[0])
+	def cook(self,data,test=False,head=True,just=1,join=None,deep=1,look=[],**opts):
+		if deep:
+			data=[
+					self.grep(name=item,look=look,emsg=emsg,deep=deep,**opts) 
+					for item in data]
+		if test:
+			return len(data)>0
+		if head:
+			if just==1:
+				return data[0] if len(data)>0 else None
+			else:
+				return data[:just]
+		else:
+			return data
+	def grep(self,name,look=[],emsg=None,deep=1,**opts):
+		return self.cook(data=dfind(name, look, emsg),look=look,emsg=emsg,deep=deep-1,**opts)
+	def parm(self,name,parms=[],emsg="No such parameter: %s",**opts):
+		return self.grep(name,[parms,self._attrs,self._kwargs],emsg=emsg,**opts)
+	def attr(self,name,attrs=[],**opts):
+		return self.grep(name,[attrs+self._attrs],**opts)
+	
 	def render_comment(self,data):
 		return "<!-- %s -->"%data
 	def handle_pop_pre(self,ret=None):
+		self._parser.close()
 		return self._buffer
 	def handle_pop(self,ret=None):
 		return ret
 	def handle_push_pre(self,ret=None):
 		return ret
 	def handle_push(self,ret=None):
+		self._parser=XTPParser(self)
+		self._buffer=''
 		return ret
 	def handle_comment(self,data):
 		self.append(self.indent(self.render_comment(data)))
@@ -302,48 +299,46 @@ class XTP(XTPLogger):
 		self.append(''.join(dfind(name,[self._attrs,self._kwargs,entities])))
 	def handle_charref(self,name):
 		self.append(''.join(dfind(name,[self._attrs,self._kwargs,characters])))
-	def isdef(self,tag):
-		return (tag in self._render_xtp__funcs or tag in self._templates)
-	def ifdef(self,tag,render,simple):
-		return render if self.isdef(tag) else simple
-	def render_xtp_tag(self,tag,attrs):
-		items=[self.parm(name) for name in dfind(["__","_items_"],[attrs])] or None
-		self.log(repr((tag,len(attrs),len(items or []))))
-		return self.render(template=tag,attrs=attrs,iterlist=items)
-	def handle_xtp(self,tag,attrs):
+	def xtp(self,tag,attrs,body=None):
 		if tag in self._templates:
-			self.append(self.render_xtp_tag(tag,attrs))
+			if body is not None:
+				attrs=[('_',body),('_body_',body)]+attrs
+			each=self.parm(self.attr('__',attrs,head=True),emsg=None,head=True)
+			if each is not None:
+				result=self.render(template=tag,attrs=attrs,iterlist=each)
+			else:
+				result=self.render(template=tag,attrs=attrs)
+			self.append(self.xtp_wrap("xtp::outer[%s]"%tag,result))
 		else:
-			self.append(self.render_xtp(tag,self.render_tag,tag,attrs))
-	def enter_subtag(self,tag,attrs):
-		self._opentag=(tag,attrs)
-		self.push()
-		self.open()
-	def enter_tag(self,tag,attrs):
-		self.handle_tag(tag,attrs,startendtag=False,endtag=False)
-		if tag not in self.noindent:
-			self._indent+=1
-	def handle_tag(self,tag,attrs,startendtag=True,endtag=False):
-		self.append(self.render_tag(tag,attrs,startendtag,endtag))
+			raise Exception("XTP Tag that doesn't exist: %s"%tag)
+	def simple_tag(self,tag,attrs,startendtag=False,endtag=False):
+		self.append(self.render_tag(tag,attrs,startendtag=startendtag,endtag=endtag))
 	def handle_starttag(self,tag,attrs):
-		self.ifdef(tag,self.enter_subtag,self.enter_tag)(tag,attrs)
-	def handle_startendtag(self,tag,attrs):
-		self.ifdef(tag,self.handle_xtp,self.handle_tag)(tag,attrs)
-	def leave_subtag(self,tag):
-		self.close()
-		body=self.pop()
-		oldtag,attrs=self._opentag
-		if tag==oldtag:
-			self.handle_xtp(tag,attrs=list(attrs)+[("_",body),("_body_",body)])
+		if tag in self._templates:
+			self._opentag=(tag,attrs)
+			self.push()
 		else:
-			raise Exception('Mismatched closing tag, expected %s, got %s.'%(oldtag,tag))
-	def leave_tag(self,tag):
-		if tag not in self.noindent:
-			self._indent-=1
-		if tag not in self.autoclose:
-			self.handle_tag(tag,[],endtag=True)
+			self.simple_tag(tag,attrs,startendtag=(tag in self.autoclose),endtag=False)
+			if tag not in self.noindent:
+					self._indent+=1
+	def handle_startendtag(self,tag,attrs):
+		if tag in self._templates:
+			self.xtp(tag,attrs)
+		else:
+			self.simple_tag(tag,attrs,startendtag=True,endtag=False)
 	def handle_endtag(self,tag):
-		self.ifdef(tag,self.leave_subtag,self.leave_tag)(tag)
+		if tag in self._templates:
+			body=self.pop()
+			oldtag,attrs=self._opentag
+			if tag==oldtag:
+				self.xtp(tag,attrs,body)
+			else:
+				raise Exception('Mismatched closing tag, expected %s, got %s.'%(oldtag,tag))
+		else:
+			if tag not in self.noindent:
+				self._indent-=1
+			if tag not in self.autoclose:
+				self.simple_tag(tag,[],startendtag=False,endtag=True)
 	def handle_data(self,data):
 		self.append(self.indent(data))
 	def handle_decl(self,decl):
@@ -375,8 +370,12 @@ def render_file(filename):
 			for data in config["data"]:
 				if data in sitemodule.data:
 					pagedata={**pagedata, **sitemodule.data[data]}
-		open("./%s"%target,"w").write(
-				xtp.render(template=config["template"],**pagedata))
+		result=xtp.render(template=config["template"],**pagedata)
+		xtp.log(result)
+		f=open(file="./%s"%target,mode="w",encoding="utf8")
+		f.write(result)
+		f.flush()
+		f.close()
 
 def import_module(filename):
 	import importlib.util

@@ -1,69 +1,68 @@
 # vim: set syntax=python ts=2 sw=2 noet:
-pages							  = {  
-		"resume.fodt"						:	{
-				"template"					:	"o:resume",
-				"data"							:	[
-						"resume"				,
-					]									,
-			}											,
-		"resume.html"						: {
-				"template"					:	"h:resume",
-				"data"							: [
-						"resume"				,
-					]									,
-			}											,
-	}	
-data												= {
-		"resume"								: {
-				"fullname"					:	"Quinn Morrighan Storm",
-
-				"phone"			:	[
-					{"."	:	"+1.415.756.6327"},
-					{"."	:	"+1.702.550.2984"},
+pages														= {  
+		"resume.fodt"								:	{
+				"template"							:	"o:resume",
+				"data"									:	[
+						"resume"						,
+					]											,
+			}													,
+		"resume.html"								: {
+				"template"							:	"h:resume",
+				"data"									: [
+						"resume"						,
+					]											,
+			}													,
+	}															# end of pages
+data														= {
+		"resume"										: {
+				"fullname"							:	"Quinn Morrighan Storm",
+				"phone"									:	[
+						"+1.415.756.6327"		,
+						"+1.702.550.2984"		,
 										],
 				"email"			: [
-					{".": "rtmf@beautifulsunrise.org" },
-					{".": "quinn@tymeslt.org"					},
-					{".":	"livinglatexkali@gmail.com"	},
-										],
+						"rtmf@beautifulsunrise.org"		,
+						"quinn@tymestl.org"		,
+						"livinglatexkali@gmail.com"		,
+						],
 				"bullets"		: [
 					{
 						"title"	:	"Core Competencies",
 						"items"	:	[
-							{ "."	:	"Project Management" },
-							{ "."	:	"Systems Administration" },
-							{ "."	:	"Software Development" },
-							{ "."	:	"Networking" },
-							{ "."	:	"Dev/OPS" },
-							{ "."	:	"IT Support" },
-							{ "."	:	"Community Management" },
-							{ "."	:	"Hardware Engineering" },
+							"Project Management"		,
+							"Systems Administration"		,
+							"Software Development"		,
+							"Networking"		,
+							"Dev/OPS"		,
+							"IT Support"		,
+							"Community Management"		,
+							"Hardware Engineering"		,
 							]
 						},
 					{
 						"title"	:	"Languages",
 						"items"	:	[
-							{ "."	:	"Python" },
-							{ "."	:	"C, C++, Objective-C" },
-							{ "."	:	"Bash, ZSH, sed, awk, grep, etc." },
-							{ "."	:	"HTML, XHTML, CSS" },
-							{ "."	:	"Java" },
-							{ "."	:	"PHP" },
-							{ "."	:	"Javascript, JQuery, Node" },
-							{ "."	:	"MySQL" },
+							"Python"		,
+							"C, C++, Objective-C"		,
+							"Bash, ZSH, sed, awk, grep, etc."		,
+							"HTML, XHTML, CSS"		,
+							"Java"		,
+							"PHP"		,
+							"Javascript, JQuery, Node"		,
+							"MySQL"		,
 							]
 						},
 					{
 						"title"	:	"Software Packages",
 						"items"	:	[
-							{ "."	:	"GDB, Valgrind, strace" },
-							{ "."	:	"CVS, SVN, GIT, Gitlab" },
-							{ "."	:	"Apache" },
-							{ "."	:	"Postfix, Dovecot, Cyrus" },
-							{ "."	:	"OpenVPN, StrongSwan" },
-							{ "."	:	"Systemd" },
-							{ "."	:	"APT, dpkg, pacman, makepkg" },
-							{ "."	:	"Autotools" },
+							"GDB, Valgrind, strace"		,
+							"CVS, SVN, GIT, Gitlab"		,
+							"Apache"		,
+							"Postfix, Dovecot, Cyrus"		,
+							"OpenVPN, StrongSwan"		,
+							"Systemd"		,
+							"APT, dpkg, pacman, makepkg"		,
+							"Autotools"		,
 							]
 						},
 					],
@@ -74,8 +73,8 @@ data												= {
 							"from"	:	"December, 2013",
 							"until"	:	"Present",
 							"duties": [
-								{ "."	:	"Under this name, I have begun building a business centered around F/OSS consulting, seeking to offer comprehensive services as a true generalist. " },
-								{ "."	:	"So far, my clients have included tasks ranging from Dev/Ops for growing e-commerce site written in django, java for android for a telepresence robot, migrating a microfactory from windows to linux and more." },
+							"Under this name, I have begun building a business centered around F/OSS consulting, seeking to offer comprehensive services as a true generalist. "		,
+							"So far, my clients have included tasks ranging from Dev/Ops for growing e-commerce site written in django, java for android for a telepresence robot, migrating a microfactory from windows to linux and more."		,
 								],
 							},
 						{
@@ -83,16 +82,14 @@ data												= {
 							"title"	:	"Minion",
 							"from"	:	"November, 2012",
 							"until"	:	"Present",
-							"duties": [
-								{ "."	:	"I&apos;ve been engaged as a consultant with this small NASA contractor based out of San Rafael California, a staunch supporter of Open Hardware and Software specializing in automation itself and therefore the research, development, and just-in-time manufacturing of almost anything imaginable." },
-								{ "‣"	:	"‣",
-									"."	:	"Electronic design, prototyping, and assembly (Analog/audio and digital), PCB layout" },
-								{ "‣"	:	"‣",
-									"."	:	"Micro-controller hardware design and software development (MSP430, Arduino, Propeller)" },
-								{ "‣"	:	"‣",
-									"."	:	"3D printer maintenance and operation, Android software in Java, Linux/Windows Desktop Software in C with GTK" },
-								{ "‣"	:	"‣",
-									"."	:	"Custom software integration including hardware support and implementation of reverse engineered protocols" },
+							"desc": [
+								"I&apos;ve been engaged as a consultant with this small NASA contractor based out of San Rafael California, a staunch supporter of Open Hardware and Software specializing in automation itself and therefore the research, development, and just-in-time manufacturing of almost anything imaginable." 
+								],
+							"duties":[
+							"Electronic design, prototyping, and assembly (Analog/audio and digital), PCB layout"		,
+							"Micro-controller hardware design and software development (MSP430, Arduino, Propeller)"		,
+							"3D printer maintenance and operation, Android software in Java, Linux/Windows Desktop Software in C with GTK"		,
+							"Custom software integration including hardware support and implementation of reverse engineered protocols"		,
 								],
 							},
 						{
@@ -100,8 +97,8 @@ data												= {
 							"title"	:	"Co-Founder",
 							"from"	:	"October, 2009",
 							"until"	:	"Present",
-							"duties": [
-								{ "."	:	"A collection of improbable people working together to design a more interesting future for us all" },
+							"desc": [
+							"A collection of improbable people working together to design a more interesting future for us all"		,
 								],
 							},
 						{
@@ -109,14 +106,13 @@ data												= {
 							"title"	:	"Production Engineer",
 							"from"	:	"July, 2008",
 							"until"	:	"October, 2008",
+							"desc": [
+							"Sole administrator responsible for the entire production infrastructure of this social messaging provider."		,
+							],
 							"duties": [
-								{ "."	:	"Sole administrator responsible for the entire production infrastructure of this social messaging provider." },
-								{ "‣"	:	"‣",
-									"."	:	"Linux system administration on Ubuntu" },
-								{ "‣"	:	"‣",
-									"."	:	"General IT work, set up office wireless network, set up Ubuntu desktop machines, etc." },
-								{ "‣"	:	"‣",
-									"."	:	"Tool development in Bash/sed/AWK/grep for general systems administration and infrastructure" },
+							"Linux system administration on Ubuntu"		,
+							"General IT work, set up office wireless network, set up Ubuntu desktop machines, etc."		,
+							"Tool development in Bash/sed/AWK/grep for general systems administration and infrastructure"		,
 								],
 							},
 						{
@@ -124,12 +120,12 @@ data												= {
 								"title"	:	"F/OSS Advocate",
 								"from"	:	"November, 2007",
 								"until"	:	"April, 2008",
+								"desc"	: [
+							"Lead in-house developer and all-around advocate for the PC manufacturer&apos;s debut in the Linux-based netbook market"		,
+							],
 								"duties": [
-									{ "."	:	"Lead in-house developer and all-around advocate for the PC manufacturer&apos;s debut in the Linux-based netbook market" },
-									{ "‣"	:	"‣",
-										"."	:	"Created Linux drivers in C to support wifi hardware from x86 disassembly alone" },
-									{ "‣"	:	"‣",
-										"."	:	"Custom integration and systems deployment for Linux-based netbook product, one of the first to sell in Wal*Mart" },
+							"Created Linux drivers in C to support wifi hardware from x86 disassembly alone"		,
+							"Custom integration and systems deployment for Linux-based netbook product, one of the first to sell in Wal*Mart"		,
 									],
 								},
 						{
@@ -137,12 +133,12 @@ data												= {
 								"title"	:	"Software Engineer",
 								"from"	:	"July, 2007",
 								"until"	:	"October, 2007",
+								"desc"	:	[
+									"Member of the tools team supporting internal development and process for the virtualization giant"		,
+									],
 								"duties": [
-									{ "."	:	"Member of the tools team supporting internal development and process for the virtualization giant" },
-									{ "‣"	:	"‣",
-										"."	:	"Build and install system development in C, Perl, Bash" },
-									{ "‣"	:	"‣",
-										"."	:	"Internal development infrastructure tools creation support and integration" },
+							"Build and install system development in C, Perl, Bash"		,
+							"Internal development infrastructure tools creation support and integration"		,
 									],
 								},
 						{
@@ -150,20 +146,16 @@ data												= {
 								"title"	:	"BDFL",
 								"from"	:	"May, 2006",
 								"until"	:	"April, 2007",
+								"desc"	:	[
+							"Creator and leader of the team responsible for this Compiz fork that finally brought the wobbly windows out of the shadows and onto your desktop!"		,
+							],
 								"duties": [
-									{ "."	:	"Creator and leader of the team responsible for this Compiz fork that finally brought the wobbly windows out of the shadows and onto your desktop!" },
-									{ "‣"	:	"‣",
-										"."	:	"Managed an international team of open source software developers via IRC, e-mail and XMPP" },
-									{ "‣"	:	"‣",
-										"."	:	"Created the modular Emerald window decorator and accompanying Emerald Theme Manager frontend" },
-									{ "‣"	:	"‣",
-										"."	:	"Created configuration architecture library libberylsettings and autogenerated frontend application//" },
-									{ "‣"	:	"‣",
-										"."	:	"Created and maintained Debian style APT repositories containing Ubuntu packages, with automated package generation scripts" },
-									{ "‣"	:	"‣",
-										"."	:	"Hosted and managed development infrastructure, including source control through CVS, SVN and GIT and custom tools" },
-									{ "‣"	:	"‣",
-										"."	:	"Read each new post on the Beryl forums and replied to over 90% of them personally to provide individual support" },
+							"Managed an international team of open source software developers via IRC, e-mail and XMPP"		,
+							"Created the modular Emerald window decorator and accompanying Emerald Theme Manager frontend"		,
+							"Created configuration architecture library libberylsettings and autogenerated frontend application//"		,
+							"Created and maintained Debian style APT repositories containing Ubuntu packages, with automated package generation scripts"		,
+							"Hosted and managed development infrastructure, including source control through CVS, SVN and GIT and custom tools"		,
+							"Read each new post on the Beryl forums and replied to over 90% of them personally to provide individual support"		,
 									]
 							},
 					],
@@ -235,7 +227,7 @@ templates   = {
 			""",
 		"h:head"		:	"""
 										<head>
-											<meta charset="utf-8"  />
+											<meta charset="utf-8" />
 											<title>${title}</title>
 											<style type="text/css">
 												* {
@@ -362,9 +354,9 @@ templates   = {
 											</div>
 										</div>
 									""",
-		"h:div"			:	"""<div class="${class}">${_}</div>""",
-		"h:½"				:	"""<span class="½">${_}${.}</span>""",
-		"h:¼"				:	"""<span class="¼">${_}${.}</span>""",
+		"h:div"			:	"""<div class="${class}">${_}${__}</div>""",
+		"h:½"				:	"""<h:div class="½">${_}${__}</h:div>""",
+		"h:¼"				:	"""<h:div class="¼">${_}${__}</h:div>""",
 		"h:1"				:	"""<h:div class="one">${_}</h:div>""",
 		"h:section"	:	"""
 										<h:block level="2" ${right:+right="${right}"} title="${title}">
@@ -375,40 +367,52 @@ templates   = {
 									""",
 		"h:position": """
 										<h:section title="${name} — ${title}" right="${from} — ${until}">
-											<foreach list="duties" name="h:duty" />
+											<h:duty __="duties" />
 										</h:section>
 									""",
 		"h:bullet"	:	"""<h:¼ />""",
 		"h:bullets"	:	"""
-										<h:1><foreach list="itersublist" name="h:bullet" /></h:1>
+										<h:1><h:bullet __="___" /></h:1>
 									""",
 		"h:bulletlist"	: """
 										<h:section title="${title}">
-											<foreach list="items" name="h:bullets" stride="4"/>
+											<h:bullets __="items" _#_="4"/>
 										</h:section>
 									""",
+					"h:a"	:	"""
+										<h:div class="${div}">
+												<a href="${scheme}${__}">
+														${__}
+												</a>
+										</h:div>
+										""",
 		"h:resume"	: """
 										<h:doc title="${fullname}'s Resume">
-
 											<h:block level="1" title="${fullname}'s Resume">
-												<h:block level="2" title="Validation"><h:validation /></h:block>
+												<h:block level="2" title="Validation">
+													<h:validation />
+												</h:block>
 												<h:block level="2" title="Available Formats">
-													The following are generated with <a href="https://github.com/rtmf/pyxtp">PyXTP</a> and LibreOffice, PyXTP generates both resume.html and resume.fodt directly, then LibreOffice is used to convert these to various formats.
+													The following are generated with 
+													<a href="https://github.com/rtmf/pyxtp">PyXTP</a> 
+													and LibreOffice, 
+													PyXTP generates both resume.html and resume.fodt,
+													LibreOffice is used to convert these to various formats.
 												</h:block>
 												<h:block level="2" title="Preview Display">
-												<h:paper>
-													<h:block level="1" title="${fullname}">
-													<h:block level="2" title="Contact Information">
-														<h:1>
-															<h:¼><foreach list="phone" name="h:½" /></h:¼>
-															<foreach list="email" name="h:¼" />
-														</h:1>
-													</h:block>
-													<foreach list="bullets" name="h:bulletlist"  />
-													<foreach list="experience" name="h:position" />
+													<h:paper>
+														<h:block level="1" title="${fullname}">
+															<h:block level="2" title="Contact Information">
+																<h:1>
+																	<h:¼><h:a div="½" scheme="tel" __="phone" /></h:¼>
+																	<h:a div="¼" scheme="mailto" __="email" />
+																</h:1>
+															</h:block>
+															<h:bulletlist __="bullets" />
+															<h:position __="experience" />
+														</h:block>
+													</h:paper>
 												</h:block>
-											</h:paper>
-											</h:block>
 											</h:block>
 										</h:doc>
 									""",
@@ -436,7 +440,7 @@ templates   = {
 										<meta:template xlink:type="simple" xlink:actuate="onRequest" xlink:title="" xlink:href="resume.odt/Normal.dotm"/>
 										</office:meta>
 									""",
-		"settings"	: """
+		"o:settings"	: """
 									 <office:settings>
 										<config:config-item-set config:name="ooo:view-settings">
 										 <config:config-item config:name="ViewAreaTop" config:type="long">0</config:config-item>
@@ -551,14 +555,14 @@ templates   = {
 										</config:config-item-set>
 									 </office:settings>
 									""",
-		"scripts"		: """
+		"o:scripts"		: """
  <office:scripts>
   <office:script script:language="ooo:Basic">
    <ooo:libraries xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink"/>
   </office:script>
  </office:scripts>
 									""",
-		"fonts"			: """
+		"o:fonts"			: """
 									 <office:font-face-decls>
 										<style:font-face style:name="Wingdings 2" svg:font-family="&apos;Wingdings 2&apos;" style:font-family-generic="roman" style:font-pitch="variable" style:font-charset="x-symbol"/>
 										<style:font-face style:name="Wingdings" svg:font-family="Wingdings" style:font-family-generic="system" style:font-pitch="variable" style:font-charset="x-symbol"/>
@@ -571,7 +575,7 @@ templates   = {
 										<style:font-face style:name="Lucida Grande" svg:font-family="&apos;Lucida Grande&apos;" style:font-family-generic="system" style:font-pitch="variable"/>
 									 </office:font-face-decls>
 									""",
-		"styles"		: """
+		"o:styles"		: """
 									 <office:styles>
 										<style:default-style style:family="graphic">
 										 <style:graphic-properties draw:stroke="solid" svg:stroke-width="0.0138in" svg:stroke-color="#2f528f" draw:stroke-linejoin="miter" svg:stroke-linecap="butt" draw:fill-color="#4472c4" fo:wrap-option="wrap" draw:shadow-offset-x="0.1181in" draw:shadow-offset-y="0.1181in" draw:start-line-spacing-horizontal="0.1114in" draw:start-line-spacing-vertical="0.1114in" draw:end-line-spacing-horizontal="0.1114in" draw:end-line-spacing-vertical="0.1114in" style:flow-with-text="false"/>
@@ -792,7 +796,7 @@ templates   = {
 										</style:default-page-layout>
 									 </office:styles>
 									""",
-		"automatic"	:	"""
+		"o:automatic"	:	"""
 										<office:automatic-styles>
 											<style:style style:name="Table1" style:family="table" style:master-page-name="MP0">
 											 <style:table-properties style:width="7.6979in" fo:margin-left="0.0201in" style:page-number="auto" table:align="left"/>
@@ -908,7 +912,7 @@ templates   = {
 											<style:style style:name="P1" style:family="paragraph" style:parent-style-name="Normal">
 											 <style:paragraph-properties fo:text-align="center" style:justify-single-word="false" fo:break-before="page"/>
 											</style:style>
-											<style:style style:name="___" style:display-name="___" style:family="table-cell" style:parent-style-name="Normal" >
+											<style:style style:name="___" style:display-name="___" style:family="table-cell" style:parent-style-name="Normal">
 											 <style:table-cell-properties fo:margin-top="0in" fo:margin-bottom="0in" loext:contextual-spacing="false" fo:hyphenation-ladder-count="no-limit" style:border-line-width-bottom="0.0071in 0.0071in 0.0071in" fo:padding="0in" fo:border-left="none" fo:border-right="none" fo:border-top="none" fo:border-bottom="1.5pt double #808080" style:shadow="none" text:number-lines="false" text:line-number="0" />
 											</style:style>
 											<style:style style:name="P2" style:family="paragraph" style:parent-style-name="Normal">
@@ -999,21 +1003,21 @@ templates   = {
 											</style:page-layout>
 										</office:automatic-styles>
 									""",
-		"master"		:	"""
+		"o:master"		:	"""
 									 <office:master-styles>
 										<style:master-page style:name="Standard" style:page-layout-name="pm1"/>
 										<style:master-page style:name="MP0" style:page-layout-name="pm2"/>
 									 </office:master-styles>
 									""",
 
-		"office"		:	"""
+		"o:office"		:	"""
 										<office:document ${officedoc}>
-											<template name="o:meta" />
-											<template name="fonts" />
-											<template name="styles" />
-											<template name="scripts" />
-											<template name="automatic" />
-											<template name="master" />
+											<o:meta />
+											<o:fonts />
+											<o:styles />
+											<o:scripts />
+											<o:automatic />
+											<o:master />
 											<office:body>
 												<office:text>
 													<text:sequence-decls>
@@ -1062,9 +1066,9 @@ templates   = {
 									""",
 		"o:trow" 	:	"""
 										<table:table-row table:style-name="Table${tn}.${s:-A1}">
-											<template name="o:titem" tn="${tn}"/>
+											<o:titem tn="${tn}"/>
 											${_}
-											<template name="o:titem" tn="${tn}"/>
+											<o:titem tn="${tn}"/>
 										</table:table-row>
 									""",
 		"o:tcell"	:	"""
@@ -1073,103 +1077,110 @@ templates   = {
 										</table:table-cell>
 									""",
 		"o:titem"		:	"""
-										<template name="o:tcell" ${cs:+cs="${cs}"} tn="${tn}" s="A1" style="${style}">
-											<template name="o:text:p" p="${p:-P2}" t="${t:-T2}" style="${style}">
+										<o:tcell ${cs:+cs="${cs}"} tn="${tn}" s="A1" style="${style}">
+											<o:text:p p="${p:-P2}" t="${t:-T2}" style="${style}">
 												${_}
-											</template>
-										</template>
+											</o:text:p>
+										</o:tcell>
 									""",
 		"o:thead"		:	"""
-										<template name="o:trow" tn="${tn}">
-											<template name="o:tcell" tn="${tn}" style="___" cs="${cs:-6}">
-												<template name="o:text:p" p="${p:-P2}" t="${t:-T6}">
+										<o:trow tn="${tn}">
+											<o:tcell tn="${tn}" style="___" cs="${cs:-6}">
+												<o:text:p p="${p:-P2}" t="${t:-T6}">
 													${_}
-												</template>
-											</template>
-										</template>
+												</o:text:p>
+											</o:tcell>
+										</o:trow>
 									""",
 		"o:bullet"	:	"""
-										<template name="o:tcell" tn="3">
-											<template name="o:text:p" t="T3">${.}</template>
-										</template>
+										<o:tcell tn="3">
+											<o:text:p t="T3">${__}</o:text:p>
+										</o:tcell>
 									""",
 		"o:brow"	:	"""
-										<template name="o:trow" tn="3">
-											<template name="o:titem" />
-											<foreach name="o:bullet" list="itersublist" />
-											<template name="o:titem" />
-										</template>
+										<o:trow tn="3">
+											<o:titem />
+											<o:bullet __="___" />
+											<o:titem />
+										</o:trow>
 									""",
 		"o:blist"		:	"""
-										<template name="o:thead" tn="3" cs="6">${title}</template>
-										<foreach name="o:brow" list="items" stride=4 />
+										<o:thead tn="3" cs="6">${title}</o:thead>
+										<o:brow __="items" _#_="4" />
 									""",
 		"o:bullets"	:	"""
-										<template name="o:t1row">
-											<template name="o:table" tn="3">
-												<foreach list="bullets" name="o:blist" />
-											</template>
-										</template>
+										<o:t1row>
+											<o:table tn="3">
+												<o:blist __="bullets" />
+											</o:table>
+										</o:t1row>
 									""",
 		"o:name"		:	"""
-										<template name="o:t1row" style="___">
-											<template name="o:text:p" p="P1" t="T1">
+										<o:t1row style="___">
+											<o:text:p p="P1" t="T1">
 												${fullname}
-											</template>
-										</template>
+											</o:text:p>
+										</o:t1row>
 									""",
 		"o:phone"		:	"""
-										<template name="o:titem" tn="2" t="T2">${.}</template>
+										<o:titem tn="2" t="T2">${.}</o:titem>
 									""",
 		"o:email"		:	"""
-										<template name="o:titem" tn="2" t="T8" p="P8" style="" >${.}</template>
+										<o:titem tn="2" t="T8" p="P8" style="">${.}</o:titem>
 									""",
 		"o:contact"	:	"""
-										<template name="o:t1row">
-											<template name="o:table" tn="2">
-												<template name="o:thead" cs="6" t="T6">
+										<o:t1row>
+											<o:table tn="2">
+												<o:thead cs="6" t="T6">
 													Contact Information
-												</template>
-												<template name="o:trow" tn="2" s="2">
-													<template name="o:titem" />
-													<foreach list="phone" name="o:phone" />
-													<foreach list="email" name="o:email" />
-													<template name="o:titem" />
-												</template>
-											</template>
-										</template>
+												</o:thead>
+												<o:trow tn="2" s="2">
+													<o:titem />
+													<o:phone __="phone" />
+													<o:email __="email" />
+													<o:titem />
+												</o:trow>
+											</o:table>
+										</o:t1row>
 									""",
+		"o:desc"		:	"""
+										<o:trow tn="4">
+											<o:titem tn="4" cs="6" P="P5" t="T5"}>${.}</o:titem>
+											<o:titem tn="4" />
+										</o:trow>
+										""",
 		"o:duty"		: """
-										<template name="o:trow" tn="4">
-											${‣:+<template name="o:titem" tn="4" p="P2" t="$T2">${‣}</template>}
-											<template name="o:titem" tn="4" ${‣:?cs="5" p="P2" t="T2"|cs="6" P="P5" t="T5"}>${.}</template>
-											<template name="o:titem" tn="4" />
-										</template>
+										<o:trow tn="4">
+											<o:titem tn="4" p="P2" t="$T2">‣</o:titem>
+											<o:titem tn="4" cs="5" p="P2" t="T2">${__}</o:titem>
+											<o:titem tn="4" />
+										</o:trow>
 									""",
 		"o:position": """
-										<template name="o:t1row">
-											<template name="o:table" tn="4">
-												<template name="o:trow" tn="4">
-													<template name="o:titem" tn="4" cs="3" style="___" p="P3" t="T6">
+										<o:t1row>
+											<o:table tn="4">
+												<o:trow tn="4">
+													<o:titem tn="4" cs="3" style="___" p="P3" t="T6">
 														${name} — ${title}
-													</template>
-													<template name="o:titem" tn="4" cs="3" style="___" p="P4" t="T6">
+													</o:titem>
+													<o:titem tn="4" cs="3" style="___" p="P4" t="T6">
 														${from} — ${until}
-													</template>
-												</template>
-												<foreach name="o:duty" list="duties" />
-											</template>
-										</template>
+													</o:titem>
+												</o:trow>
+												<o:desc __="desc" />
+												<o:duty __="duties" />
+											</o:table>
+										</o:t1row>
 									""",
 		"o:work"		: """
-												<foreach list="experience" name="o:position" />
+										<o:position __="experience" />
 									""",
-		"o:resume"		:	"""<template name="o:dtd" />
-										<template name="office">
-											<template name="o:name" />
-											<template name="o:contact" />
-											<template name="o:bullets" />
-											<template name="o:work" />
-										</template>
+		"o:resume"		:	"""<o:dtd />
+										<o:office>
+											<o:name />
+											<o:contact />
+											<o:bullets />
+											<o:work />
+										</o:office>
 									""",
 				}
