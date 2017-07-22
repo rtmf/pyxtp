@@ -1,7 +1,6 @@
 # resite target's Makefile
-XTPFMT = html \
-				 $(LOSRCF)
 LOSRCF = fodt
+XTPFMT = $(LOSRCF)
 MSFMTS = doc  \
 				 docx \
 				 uot  \
@@ -18,7 +17,7 @@ FORMAT = \
 SOURCE = resume.py
 RESUME = $(BUILD)/resume/resume.
 BUILDS = $(FORMAT:%=$(RESUME)%)
-OUTPUT = $(BUILDS) $(BUILD)/resume
+OUTPUT = $(BUILDS)
 all: $(OUTPUT)
 
 $(BUILD)/resume:

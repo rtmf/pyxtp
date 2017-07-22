@@ -1,23 +1,30 @@
 # vim: set syntax=python ts=2 sw=2 noet:
-pages        = {  
-		"resume.fodt"		:	{
-				"template"	:	"o:resume",
-				"data"			:	[
-					"resume",
-										]
-									}
-		}
-data = {
-		"resume"				: {
-				"fullname"	:	"Quinn Morrighan Storm",
+pages							  = {  
+		"resume.fodt"						:	{
+				"template"					:	"o:resume",
+				"data"							:	[
+						"resume"				,
+					]									,
+			}											,
+		"resume.html"						: {
+				"template"					:	"h:resume",
+				"data"							: [
+						"resume"				,
+					]									,
+			}											,
+	}	
+data												= {
+		"resume"								: {
+				"fullname"					:	"Quinn Morrighan Storm",
+
 				"phone"			:	[
-					{"number"	:	"+1.415.756.6327"},
-					{"number"	:	"+1.702.550.2984"},
+					{"."	:	"+1.415.756.6327"},
+					{"."	:	"+1.702.550.2984"},
 										],
 				"email"			: [
-					{"address": "rtmf@beautifulsunrise.org" },
-					{"address": "quinn@tymeslt.org"					},
-					{"address":	"livinglatexkali@gmail.com"	},
+					{".": "rtmf@beautifulsunrise.org" },
+					{".": "quinn@tymeslt.org"					},
+					{".":	"livinglatexkali@gmail.com"	},
 										],
 				"bullets"		: [
 					{
@@ -78,18 +85,14 @@ data = {
 							"until"	:	"Present",
 							"duties": [
 								{ "."	:	"I&apos;ve been engaged as a consultant with this small NASA contractor based out of San Rafael California, a staunch supporter of Open Hardware and Software specializing in automation itself and therefore the research, development, and just-in-time manufacturing of almost anything imaginable." },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ Electronic design, prototyping, and assembly (Analog/audio and digital), PCB layout" },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ Micro-controller hardware design and software development (MSP430, Arduino, Propeller)" },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ 3D printer maintenance and operation, Android software in Java, Linux/Windows Desktop Software in C with GTK" },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ Custom software integration including hardware support and implementation of reverse engineered protocols" },
+								{ "‣"	:	"‣",
+									"."	:	"Electronic design, prototyping, and assembly (Analog/audio and digital), PCB layout" },
+								{ "‣"	:	"‣",
+									"."	:	"Micro-controller hardware design and software development (MSP430, Arduino, Propeller)" },
+								{ "‣"	:	"‣",
+									"."	:	"3D printer maintenance and operation, Android software in Java, Linux/Windows Desktop Software in C with GTK" },
+								{ "‣"	:	"‣",
+									"."	:	"Custom software integration including hardware support and implementation of reverse engineered protocols" },
 								],
 							},
 						{
@@ -108,15 +111,12 @@ data = {
 							"until"	:	"October, 2008",
 							"duties": [
 								{ "."	:	"Sole administrator responsible for the entire production infrastructure of this social messaging provider." },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ Linux system administration on Ubuntu" },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ General IT work, set up office wireless network, set up Ubuntu desktop machines, etc." },
-								{ "o"	:	"T2",
-										"p"	:	"P2",
-									"."	:	"‣ Tool development in Bash/sed/AWK/grep for general systems administration and infrastructure" },
+								{ "‣"	:	"‣",
+									"."	:	"Linux system administration on Ubuntu" },
+								{ "‣"	:	"‣",
+									"."	:	"General IT work, set up office wireless network, set up Ubuntu desktop machines, etc." },
+								{ "‣"	:	"‣",
+									"."	:	"Tool development in Bash/sed/AWK/grep for general systems administration and infrastructure" },
 								],
 							},
 						{
@@ -126,12 +126,10 @@ data = {
 								"until"	:	"April, 2008",
 								"duties": [
 									{ "."	:	"Lead in-house developer and all-around advocate for the PC manufacturer&apos;s debut in the Linux-based netbook market" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Created Linux drivers in C to support wifi hardware from x86 disassembly alone" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Custom integration and systems deployment for Linux-based netbook product, one of the first to sell in Wal*Mart" },
+									{ "‣"	:	"‣",
+										"."	:	"Created Linux drivers in C to support wifi hardware from x86 disassembly alone" },
+									{ "‣"	:	"‣",
+										"."	:	"Custom integration and systems deployment for Linux-based netbook product, one of the first to sell in Wal*Mart" },
 									],
 								},
 						{
@@ -141,12 +139,10 @@ data = {
 								"until"	:	"October, 2007",
 								"duties": [
 									{ "."	:	"Member of the tools team supporting internal development and process for the virtualization giant" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Build and install system development in C, Perl, Bash" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Internal development infrastructure tools creation support and integration" },
+									{ "‣"	:	"‣",
+										"."	:	"Build and install system development in C, Perl, Bash" },
+									{ "‣"	:	"‣",
+										"."	:	"Internal development infrastructure tools creation support and integration" },
 									],
 								},
 						{
@@ -156,24 +152,18 @@ data = {
 								"until"	:	"April, 2007",
 								"duties": [
 									{ "."	:	"Creator and leader of the team responsible for this Compiz fork that finally brought the wobbly windows out of the shadows and onto your desktop!" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Managed an international team of open source software developers via IRC, e-mail and XMPP" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Created the modular Emerald window decorator and accompanying Emerald Theme Manager frontend" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Created configuration architecture library libberylsettings and autogenerated frontend application//" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Created and maintained Debian style APT repositories containing Ubuntu packages, with automated package generation scripts" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Hosted and managed development infrastructure, including source control through CVS, SVN and GIT and custom tools" },
-									{ "o"	:	"T2",
-										"p"	:	"P2",
-										"."	:	"‣ Read each new post on the Beryl forums and replied to over 90% of them personally to provide individual support" },
+									{ "‣"	:	"‣",
+										"."	:	"Managed an international team of open source software developers via IRC, e-mail and XMPP" },
+									{ "‣"	:	"‣",
+										"."	:	"Created the modular Emerald window decorator and accompanying Emerald Theme Manager frontend" },
+									{ "‣"	:	"‣",
+										"."	:	"Created configuration architecture library libberylsettings and autogenerated frontend application//" },
+									{ "‣"	:	"‣",
+										"."	:	"Created and maintained Debian style APT repositories containing Ubuntu packages, with automated package generation scripts" },
+									{ "‣"	:	"‣",
+										"."	:	"Hosted and managed development infrastructure, including source control through CVS, SVN and GIT and custom tools" },
+									{ "‣"	:	"‣",
+										"."	:	"Read each new post on the Beryl forums and replied to over 90% of them personally to provide individual support" },
 									]
 							},
 					],
@@ -222,8 +212,208 @@ data = {
 			}
 		}
 templates   = {
-		"dtd"				: """<?xml version="1.0" encoding="UTF-8"?>\n""",
-		"meta"			: """
+		"h:level"		:	"""
+										<style type="text/css">
+											.level${level} {
+												font-size:${size};
+												flex-direction:column;
+												}
+											${extra:+.level${level}.${extra}}${_}
+										</style>
+									""",
+			"h:validation":"""
+					<a style="margin:0;border:0;padding:0" href="http://validator.w3.org/check/referer">
+						<img style="margin:0;border:0;padding:0;width:88px;height:31px"
+							src="http://tymestl.org/~rtmf/images/valid-html5-blue.svg"
+							alt="Valid HTML5!" />
+					</a>
+					<a style="margin:0;border:0;padding:0" href="http://jigsaw.w3.org/css-validator/check/referer">
+						<img style="margin:0;border:0;padding:0;width:88px;height:31px"
+							src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+							alt="Valid CSS!" />
+					</a>
+			""",
+		"h:head"		:	"""
+										<head>
+											<meta charset="utf-8"  />
+											<title>${title}</title>
+											<style type="text/css">
+												* {
+													position:relative;
+													margin:0px;
+													padding:0px;
+													border:0px;
+													float:none;
+													font-style:normal;
+													font-family:Sans;
+													box-sizing:border-box;
+													display:flex;
+												}
+													body {
+													overflow:hidden;
+													}
+												.underborder {
+													border-top:0px;
+													border-left:0px;
+													border-right:0px;
+													border-bottom:1.5px;
+													border-color:#000000;
+													border-style:solid;
+													width:100%;
+												}
+												.right {
+													text-align:right;
+													float:right;
+													margin-left:auto
+													}
+												.header {
+													font-size:150%;
+													font-weight:bold;
+													flex-direction:row;
+													flex-grow:0;
+													}
+												.paperdoc {
+													margin-right:0.5in;
+													margin-right:0.5in;
+													width:8.5in;
+													height:11in;
+													overflow:scroll;	
+													}
+												.viewport {
+													flex-direction:column;
+													overflow:scroll;	
+													}
+												.section {
+													flex-direction:column;
+													}
+												.block {
+													flex-grow:1;
+													margin:0.125in;
+													}
+												.dot {
+													width:0.3in;
+													text-align:right;
+													}
+												.one {
+													width:100%;
+													margin-right:auto;
+													display:flex;
+													flex-direction:row;
+													}
+												.½ {
+													width:50%;
+													display:inline-flex;
+													flex-direction:row;
+													}
+												.¼ {
+													width:25%;
+													display:inline-flex;
+													flex-direction:row;
+													}
+											</style>
+											<h:level level="0" size="14pt" />
+											<h:level level="1" size="10pt" extra="header">
+												 {
+													margin-left:auto;
+													margin-right:auto;
+													text-align:center;
+													}
+											</h:level>
+											<h:level level="2" size="8pt" extra="header">
+												 {
+													font-style:italic;
+													margin:0px;
+													text-align:left;
+													}
+											</h:level>
+											<h:level level="3" size="8pt"/>
+										</head>
+									""",
+		"h:html"		:	"""
+		<!DOCTYPE html>
+		<html lang="en">${_}</html>""",
+		"h:doc"			:	"""
+										<h:html>
+											<h:head title="${fullname}'s Resume" />
+											<body>
+												<div>
+													${_}
+												</div>
+											</body>
+										</h:html>
+									""",
+		"h:paper"		:	"""
+										<div class="viewport">
+												<div class="paperdoc">
+													${_}
+											</div>
+										</div>
+									""",
+		"h:block"		:	"""
+										<div class="level${level:-0} section">
+											<div class="level${level:-0} underborder">
+												<div class="level${level:-0} header">
+													${title}
+													${right:+<div class="level${level:-0} right header">${right}</div>}
+												</div>
+											</div>
+											<div class="level${level:-0} block">
+												${_}
+											</div>
+										</div>
+									""",
+		"h:div"			:	"""<div class="${class}">${_}</div>""",
+		"h:½"				:	"""<span class="½">${_}${.}</span>""",
+		"h:¼"				:	"""<span class="¼">${_}${.}</span>""",
+		"h:1"				:	"""<h:div class="one">${_}</h:div>""",
+		"h:section"	:	"""
+										<h:block level="2" ${right:+right="${right}"} title="${title}">
+											${_}
+										</h:block>
+									""",
+		"h:duty"		:	"""<h:1>${‣:+<span class="dot">${‣}</span>}${.}</h:1>
+									""",
+		"h:position": """
+										<h:section title="${name} — ${title}" right="${from} — ${until}">
+											<foreach list="duties" name="h:duty" />
+										</h:section>
+									""",
+		"h:bullet"	:	"""<h:¼ />""",
+		"h:bullets"	:	"""
+										<h:1><foreach list="itersublist" name="h:bullet" /></h:1>
+									""",
+		"h:bulletlist"	: """
+										<h:section title="${title}">
+											<foreach list="items" name="h:bullets" stride="4"/>
+										</h:section>
+									""",
+		"h:resume"	: """
+										<h:doc title="${fullname}'s Resume">
+
+											<h:block level="1" title="${fullname}'s Resume">
+												<h:block level="2" title="Validation"><h:validation /></h:block>
+												<h:block level="2" title="Available Formats">
+													The following are generated with <a href="https://github.com/rtmf/pyxtp">PyXTP</a> and LibreOffice, PyXTP generates both resume.html and resume.fodt directly, then LibreOffice is used to convert these to various formats.
+												</h:block>
+												<h:block level="2" title="Preview Display">
+												<h:paper>
+													<h:block level="1" title="${fullname}">
+													<h:block level="2" title="Contact Information">
+														<h:1>
+															<h:¼><foreach list="phone" name="h:½" /></h:¼>
+															<foreach list="email" name="h:¼" />
+														</h:1>
+													</h:block>
+													<foreach list="bullets" name="h:bulletlist"  />
+													<foreach list="experience" name="h:position" />
+												</h:block>
+											</h:paper>
+											</h:block>
+											</h:block>
+										</h:doc>
+									""",
+		"o:dtd"			: """<?xml version="1.0" encoding="UTF-8"?>\n""",
+		"o:meta"			: """
 										<office:meta>
 										<meta:generator>
 										LibreOffice/5.3.2.2$Linux_X86_64 LibreOffice_project/30m0$Build-2</meta:generator>
@@ -818,7 +1008,7 @@ templates   = {
 
 		"office"		:	"""
 										<office:document ${officedoc}>
-											<template name="meta" />
+											<template name="o:meta" />
 											<template name="fonts" />
 											<template name="styles" />
 											<template name="scripts" />
@@ -929,10 +1119,10 @@ templates   = {
 										</template>
 									""",
 		"o:phone"		:	"""
-										<template name="o:titem" tn="2" t="T2">${number}</template>
+										<template name="o:titem" tn="2" t="T2">${.}</template>
 									""",
 		"o:email"		:	"""
-										<template name="o:titem" tn="2" t="T8" p="P8" style="" >${address}</template>
+										<template name="o:titem" tn="2" t="T8" p="P8" style="" >${.}</template>
 									""",
 		"o:contact"	:	"""
 										<template name="o:t1row">
@@ -951,8 +1141,8 @@ templates   = {
 									""",
 		"o:duty"		: """
 										<template name="o:trow" tn="4">
-											${p:+<template name="o:titem" tn="4" p="${p:-P5}" t="${o:-T5}"/>}
-											<template name="o:titem" tn="4" ${p:+cs="5"} p="${p:-P5" cs="6}" t="${o:-T5}">${.}</template>
+											${‣:+<template name="o:titem" tn="4" p="P2" t="$T2">${‣}</template>}
+											<template name="o:titem" tn="4" ${‣:?cs="5" p="P2" t="T2"|cs="6" P="P5" t="T5"}>${.}</template>
 											<template name="o:titem" tn="4" />
 										</template>
 									""",
@@ -974,7 +1164,7 @@ templates   = {
 		"o:work"		: """
 												<foreach list="experience" name="o:position" />
 									""",
-		"o:resume"		:	"""<template name="dtd" />
+		"o:resume"		:	"""<template name="o:dtd" />
 										<template name="office">
 											<template name="o:name" />
 											<template name="o:contact" />

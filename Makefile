@@ -13,7 +13,7 @@ SUBDIRS=$(SITES)
 
 .PHONY: $(SUBDIRS)
 
-all: $(BUILD) $(SUBDIRS) resume.fodt
+all: $(BUILD) $(SUBDIRS)
 
 clean: 
 	rm -rf $(BUILD)

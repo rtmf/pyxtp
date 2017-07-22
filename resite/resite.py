@@ -34,7 +34,7 @@ in XTP the important values of a site module like this one are:
 pages = {
 		#this the render targets for this module
 		"index.html"	:	{
-			"template"	:	"index",
+			"template"	:	"h:index",
 			#"data"			: [ 
 			#this specifies which data chunks will be pulled directly into the site's namespace
 			#the rest of data will still be available as ${foo::bar}
@@ -165,7 +165,7 @@ data = {
 					"class"		: "menu-tendina",
 					"link"		: "robots/",
 					"title"		: "Robots",
-					"template":	"tendina",
+					"template":	"h:tendina",
 					},
 				{
 					"link"		: "robots/land/",
@@ -232,7 +232,7 @@ data = {
 }
 templates = {
 		#the only important template to render right now for resite is index, which generates index.html
-		"paypal"		: """
+		"h:paypal"		: """
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 					<input type="hidden" name="cmd" value="_xclick">
 					<input type="hidden" name="business" value="${paypal-email}">
@@ -250,22 +250,22 @@ templates = {
 					${_}
 				</form>
 			""",
-			"dtd"				: """
+			"h:dtd"				: """
 			<!doctype html>
 			""",
-			"html-for-ie"			: """
+			"h:html-for-ie"			: """
 				<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 				<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 				<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 				<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 			""",
-			"html"		  : """
-				<!--<template name="html-for-ie" />-->
+			"h:html"		  : """
+				<!--<h:html-for-ie />-->
 				<html lang="en">
 					${_}
 				</html>
 			""",
-			"head"			: """
+			"h:head"			: """
 				<head>
 					<meta charset="utf-8">
 					<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -281,23 +281,23 @@ templates = {
 						<link rel="shortcut icon" href="img/favicon.ico"/>
 				</head>
 			""",
-			"body"		:	"""
+			"h:body"		:	"""
 				<body>
 					<div id="st-container" class="st-container">
 						<div class="st-pusher">
-							<template name="filters" />
+							<h:filters />
 							<div class="st-content"><!-- this is the wrapper for the content -->
-								<template name="header" />
-								<template name="items" />
-								<template name="contact" />
-								<template name="footer" />
+								<h:header />
+								<h:items />
+								<h:contact />
+								<h:footer />
 							</div><!-- /st-content -->
 						</div><!-- /st-pusher -->
 					</div><!-- /st-container -->	
-					<template name="js" />
+					<h:js />
 				</body>
 			""",
-			"js"			: """
+			"h:js"			: """
 				<script src="js/jquery.js"></script>
 				<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
 				<script src="js/bootstrap.js"></script>
@@ -308,24 +308,24 @@ templates = {
 				<script src="js/sidebarEffects.js"></script>
 				<script src="js/form.js"></script>
 			""",
-			"index"		: """
-				<template name="dtd" />
-				<template name="html">
-					<template name="head" />
-					<template name="body" />
-				</template>
+			"h:index"		: """
+				<h:dtd />
+				<h:html>
+					<h:head />
+					<h:body />
+				</h:html>
 			""",
-			"items"		:	"""
+			"h:items"		:	"""
 				<section>
 					<div id="st-trigger-effects" class="column">
 						<button data-effect="st-effect-7">filter robots</button>
 					</div><!-- st-trigger-effects .column -->
 					<ul class="products-list">
-						<foreach list="items" name="item" />
+						<foreach list="items" name="h:item" />
 					</ul>
 				</section>
 			""",
-			"item"		: """
+			"h:item"		: """
 				<li class="${class}" id="item-${name}">
 					<div class="single-product">
 						<a href="${link}">
@@ -336,71 +336,70 @@ templates = {
 						<h3><a href="${link}">${title}</a></h3>
 						<p class="product-desc">${desc}</p>
 						<footer class="infobtn">
-							<template name="paypal">
-								<a class="btn btn-large" href="${link}" target="_blank">info</a>
-							</template>
+							<h:paypal><a class="btn btn-large" href="${link}" target="_blank">info</a></h:paypal>
 						</footer>
 					</div> <!-- .info -->
 				</li>
 			""",
-			"category": """
+			"h:category": """
 				<li class="filterbtn" id="${name}"><a href="#">${title}</a></li>
 			""",
-			"filters"	:	"""
+			"h:filters"	:	"""
 				<!-- 	
 					MENU - FILTER
 				-->
 				<nav class="st-menu st-effect-7" id="menu-7">
 					<h2 class="icon icon-lab">What kind of robots do you wanna buy?</h2>
 					<ul>
-						<foreach list="categories" name="category" />
+						<foreach list="categories" name="h:category" />
 						<li class="filterbtn" id="all"><a href="#">View All</a></li>
 					</ul>
 				</nav>
 			""",
-			"menuitem-top": """
+			"h:menuitem-top": """
 				<li ${class:+class="${class}"}>
 					${link:+<a href="${link}">}
 						${icon:+<i class="icon ${icon}"></i>}
 						${title}
 					${link:+</a>}
-			""",
-			"menuitem": """
-				<template name="menuitem-top" />
+					${_}
 				</li>
 			""",
-			"tendina"	: """
-				<template name="menuitem-top" />
+			"h:menuitem": """
+				<h:menuitem-top />
+			""",
+			"h:tendina"	: """
+				<h:menuitem-top>
 					<nav class="tendina">
 						<ul>
-							<foreach name="menuitem" list="itersublist" />
+							<foreach name="h:menuitem" list="itersublist" />
 						</ul>
 					</nav>
-				</li>
+				</h:menuitem-top>
 			""",
-			"menu"		: """
+			"h:menu"		: """
 				<header id="header">
 					<div class="header-content clearfix">
 						<a class="logo" href="http://robots-everywhere.com/re_site/"><img alt="logo" src="img/robots-everywhere.png"> <span>ROBOTS EVERYWHERE</span></a>
 						<nav class="navigation">
 							<ul class="primary-nav">
-								<foreach subtemp="first" sublist="yes" name="menuitem" list="menu" />
+								<foreach subtemp="first" sublist="yes" name="h:menuitem" list="menu" />
 							</ul>
 						</nav>
 						<a href="#" class="nav-toggle">Menu<span></span></a>
 					</div><!-- header-content -->
 				</header><!-- header -->
 			""",
-			"header"	:	"""
+			"h:header"	:	"""
 				<div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
-					<template name="menu" />
+					<h:menu />
 				</div><!-- /st-content-inner -->
 				<div class="store-header">
 					<h1>${title}</h1>
 					<h2>${desc}</h2>
 				</div><!-- /store-header -->
 			""",
-			"contact"	: """
+			"h:contact"	: """
 				<section id="contact">
 					<h2>Contact us</h2>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quam quam, commodo nec lacinia id, volutpat fermentum tortor.</p>
@@ -429,7 +428,7 @@ templates = {
 					</div> <!-- end contact_form -->
 				</section>
 			""",
-			"footer"	: """
+			"h:footer"	: """
 				<footer>
 					<div class="container">
 						<div class="row">
@@ -440,7 +439,7 @@ templates = {
 									</div><!-- .logo-footer -->
 									<div class="content-footer">
 										<span>Robots Everywhere</span>
-										<template name="validation" />
+										<h:validation />
 										<br>
 										Lorem ispsum lorem ipsum lorem ipsum lorem 
 			ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem 
@@ -466,7 +465,7 @@ templates = {
 					</div><!-- .container -->
 				</footer>
 			""",
-			"validation":"""
+			"h:validation":"""
 					<a style="margin:0;border:0;padding:0" href="http://validator.w3.org/check/referer">
 						<img style="margin:0;border:0;padding:0;width:88px;height:31px"
 							src="http://tymestl.org/~rtmf/images/valid-html5-blue.svg"

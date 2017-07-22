@@ -6,25 +6,27 @@ from html.entities import html5 as entities, name2codepoint as characters
 import types
 def dfind(name,dicts,error=None):
 	ret=[]
-	for assoc in dicts:
-		if type(assoc)==dict:
-			if name in assoc:
-				ret.append(assoc[name])
-		elif type(assoc)==list:
-			for val in [val for (key,val) in assoc if key==name]:
-				ret.append(val)
+	if type(name)==list:
+		for search in name:
+			for assoc in dfind(search,dicts,error):
+				ret.append(assoc)
+	else:
+		for assoc in dicts:
+			if type(assoc)==dict:
+				if name in assoc:
+					ret.append(assoc[name])
+			elif type(assoc)==list:
+				for val in [val for (key,val) in assoc if key==name]:
+					ret.append(val)
 	if len(ret)==0 and error is not None:
 		raise Exception(error%name)
 	else:
 		return ret
-
 class XTPLogger():
 	def log(self,foo):
-		pass
-		#from sys import stderr
-		#stderr.write("%s\n"%foo)
-		#stderr.flush()
-
+		from sys import stderr
+		stderr.write("%s\n"%foo)
+		stderr.flush()
 class XTPClassManipulator():
 	def addmethod(self,func,name,target=None,source=None):
 		setattr(target if target is not None else self,name,self.bindfunc(func,
@@ -37,7 +39,6 @@ class XTPClassManipulator():
 		elif error is not None:
 			error(target,*args,ret=ret,**kwargs)
 			return ret
-
 class XTPAutoGeneric(XTPClassManipulator,XTPLogger):
 	def __init__(self,target,generics=[]):
 		self.__generic_target__=target
@@ -73,7 +74,6 @@ class XTPAutoGeneric(XTPClassManipulator,XTPLogger):
 					] if type(func).__name__=='method' ] })
 		#print(listname,getattr(self.__generic_target__,listname))
 		return listname,getattr(self.__generic_target__,listname)
-
 class XTPAutoHandlers(XTPClassManipulator,XTPLogger):
 	def __init__(self,source,target,funcs):
 		self.__auto_source__=source
@@ -94,7 +94,6 @@ class XTPAutoHandlers(XTPClassManipulator,XTPLogger):
 		return (lambda self,*args,ret=None,**kwargs:
 				autohandler.callmethod(func,*args,**kwargs,ret=
 					autohandler.callmethod("%s_pre"%func,*args,**kwargs,ret=ret)))
-
 class XTPAutoStack(XTPLogger,XTPClassManipulator):
 	__statelist__=[]
 	__stack__=[]
@@ -128,37 +127,34 @@ class XTPAutoStack(XTPLogger,XTPClassManipulator):
 	def state(self,statelist=[]):
 		return {attr: self.get(type(attr).__name__,self.bindfunc(getattr,self.__stack_target__),attr)
 			for attr in statelist+self.__statelist__}
-
 class XTPExpansion(XTPLogger):
 	def __init__(self,dlist):
 		self._dlist=dlist
 	def submatch(self,match):
 		return self.expand(**match.groupdict())
-	def expand(self,param,flags=None,index=None,sflag=None,expn=None):
+	def expand(self,param,everything,flags=None,index=None,sflag=None,mode=None,expn=None,trinary=None,true=None,false=None):
 		value=''
 		values=dfind(param,self._dlist)
-		if expn and len(expn)>0:
-			mode=expn[0]
-			data=expn[1:]
-		else:
-			mode=''
-			data=''
 		if len(values)==0:
-			if mode=='-':
-				value=data
-			elif mode=='|':
-				value=self.subst('${'+data+'}')
+			if trinary=='?':
+				value=false
+			elif mode=='-':
+				value=expn
+			else:
+				value=''
 		else:
-			if mode=='+':
-				value=data
+			if trinary=='?':
+				value=true
+			elif mode=='+':
+				value=expn
 			elif mode=='.':
-				value=data.join(map(str,values))
+				value=expn.join(map(str,values))
 			else:
 				value=str(values[0])
 		if not len(value):
-			self.log("could not find ${%s:%s} or result is empty string"%(param,expn))
-		else:
-			self.log("substituted ${%s:%s} with %s"%(param,expn,value))
+			self.log("could not find %s or result is empty string"%(everything))
+		#else:
+		#	self.log("substituted %s with %s"%(everything,value))
 		return value
 	def subst(self,text):
 		count=1
@@ -166,14 +162,15 @@ class XTPExpansion(XTPLogger):
 			text,count=re.subn(
 					r"(?msux)(?#turn on multiline, enable comments,"
 					r"allow . to match anything, enable unicode support)"
-					r"(?#match leading ${)\$\{"
+					r"(?#match leading ${)(?P<everything>\$\{"
 					r"(?#optional expansion flags)(?P<flags>\([^\)]*\))?"
 					r"(?#parameter name to expand)(?P<param>[^$:{}\[\]]*)"
 					r"(?#optional subscript index)(?P<index>\["
 					r"(?#optional subscript flags)(?P<sflag>\([^\)]*\))?"
 					r"(?#close optional subscript)[^\]]*\])?"
-					r"(?#optional expansion modes)(:(?P<expn>[^${}]*))?"
-					r"(?#match trailing })\}", self.submatch, text)
+					r"(?#optional expansion modes)(:(?P<mode>[.+-])(?P<expn>[^${}]*))?"
+					r"(?#optional alternate modes)(:(?P<trinary>\?)(?P<true>[^${}\|]*)\|(?P<false>[^${}]*))?"
+					r"(?#match trailing })\})", self.submatch, text)
 		return text
 
 class XTP(XTPLogger):
@@ -205,13 +202,13 @@ class XTP(XTPLogger):
 		self._parser=None
 	def render(self,template,attrs=[],iterlist=None,**kwargs):
 		self.push()
+		self.open()
 		self._template=template
 		self._kwargs={**self._kwargs,**kwargs}
 		self._attrs=attrs
 		self._template=template
 		self._buffer=''
 		depth=self.depth()
-
 		if iterlist is None:
 			if self._template in self._templates:
 				self._parser.feed(self.subst(self._templates[self._template]))
@@ -248,17 +245,20 @@ class XTP(XTPLogger):
 						self.append(self.render(**subitem,iterlist=None,itersublist=itersublist,attrs=self._attrs))
 					else:
 						raise(Exception('Sublist passed instead of dict but sublist is not enabled!'))
+		self.close()
+		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
+	def open(self):
+		self._parser=XTPParser(self)
+		self._buffer=''
+	def close(self):
+		depth=self.depth()
 		self._parser.close()
 		if (depth!=self.depth()):
 			raise Exception('Error in template: %s (child not closed properly)'%template)
-		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
 		return self.indent(data)
-#		return self.indent("<!-- begin %s -->"%name)+data+self.indent("<!-- end %s -->"%name)
-
 	def subst(self,text):
 		return XTPExpansion([self._attrs,self._kwargs]).subst(text)
-
 	def indent(self,data):
 		return ''.join([
 				self._indentby*self._indent+line.strip()+'\n'
@@ -272,67 +272,80 @@ class XTP(XTPLogger):
 	def render_attrs(self,attrs):
 		return ['%s="%s"'%(name,value) for (name,value) in attrs if value is not None]
 	def render_tag(self,tag,attrs,endtag=False,startendtag=False):
+		startendtag=startendtag or (tag in self.autoclose)
 		return self.indent("<%s%s%s>"%("/" if endtag else "",
 				tag if endtag else " ".join([tag]+self.render_attrs(attrs)),
 				" /" if startendtag else ""))
-
 	def parm(self,name):
 		return dfind(name,[self._attrs,self._kwargs],'No such parameter: %s')[0]
 	def attr(self,name):
 		return dfind(name,[self._attrs])
-	
 	def render_xtp_template(self,tag,attrs):
 		return self.render(dfind('name',[attrs])[0],attrs=attrs)
 	def render_xtp_foreach(self,tag,attrs):
 		return self.render(dfind('name',[attrs])[0],attrs=attrs,iterlist=self.parm(dfind('list',[attrs])[0]))
 	def render_xtp_parm(self,tag,attrs):
 		return self.parm(dfind('name',[attrs])[0])
-	def render_startendtag(self,tag,attrs):
-		return self.render_tag(tag,attrs,startendtag=True)
-	
+	def render_comment(self,data):
+		return "<!-- %s -->"%data
 	def handle_pop_pre(self,ret=None):
-		self._parser.close()
 		return self._buffer
 	def handle_pop(self,ret=None):
 		return ret
-
 	def handle_push_pre(self,ret=None):
 		return ret
 	def handle_push(self,ret=None):
-		self._parser=XTPParser(self)
-		self._buffer=''
 		return ret
-	
 	def handle_comment(self,data):
-		self.append(self.indent('<!--%s-->'%data))
+		self.append(self.indent(self.render_comment(data)))
 	def handle_entityref(self,name):
 		self.append(''.join(dfind(name,[self._attrs,self._kwargs,entities])))
 	def handle_charref(self,name):
 		self.append(''.join(dfind(name,[self._attrs,self._kwargs,characters])))
-	def handle_startendtag(self,tag,attrs):
-		self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs))
+	def isdef(self,tag):
+		return (tag in self._render_xtp__funcs or tag in self._templates)
+	def ifdef(self,tag,render,simple):
+		return render if self.isdef(tag) else simple
+	def render_xtp_tag(self,tag,attrs):
+		items=[self.parm(name) for name in dfind(["__","_items_"],[attrs])] or None
+		self.log(repr((tag,len(attrs),len(items or []))))
+		return self.render(template=tag,attrs=attrs,iterlist=items)
+	def handle_xtp(self,tag,attrs):
+		if tag in self._templates:
+			self.append(self.render_xtp_tag(tag,attrs))
+		else:
+			self.append(self.render_xtp(tag,self.render_tag,tag,attrs))
+	def enter_subtag(self,tag,attrs):
+		self._opentag=(tag,attrs)
+		self.push()
+		self.open()
+	def enter_tag(self,tag,attrs):
+		self.handle_tag(tag,attrs,startendtag=False,endtag=False)
+		if tag not in self.noindent:
+			self._indent+=1
+	def handle_tag(self,tag,attrs,startendtag=True,endtag=False):
+		self.append(self.render_tag(tag,attrs,startendtag,endtag))
 	def handle_starttag(self,tag,attrs):
-		if tag in self._render_xtp__funcs:
-			self._opentag=(tag,attrs)
-			self.push()
+		self.ifdef(tag,self.enter_subtag,self.enter_tag)(tag,attrs)
+	def handle_startendtag(self,tag,attrs):
+		self.ifdef(tag,self.handle_xtp,self.handle_tag)(tag,attrs)
+	def leave_subtag(self,tag):
+		self.close()
+		body=self.pop()
+		oldtag,attrs=self._opentag
+		if tag==oldtag:
+			self.handle_xtp(tag,attrs=list(attrs)+[("_",body),("_body_",body)])
 		else:
-			self.append(self.render_tag(tag,attrs,startendtag=(tag in self.autoclose)))
-			if tag not in self.noindent:
-				self._indent+=1
+			raise Exception('Mismatched closing tag, expected %s, got %s.'%(oldtag,tag))
+	def leave_tag(self,tag):
+		if tag not in self.noindent:
+			self._indent-=1
+		if tag not in self.autoclose:
+			self.handle_tag(tag,[],endtag=True)
 	def handle_endtag(self,tag):
-		if tag in self._render_xtp__funcs:
-			body=self.pop()
-			tag,attrs=self._opentag
-			self.append(self.render_xtp(tag,self.render_startendtag,tag,attrs+[('_',body),('_body_',body)]))
-		else:
-			if tag not in self.noindent:
-				self._indent-=1
-			if tag not in self.autoclose:
-				self.append(self.render_tag(tag,[],endtag=True))
+		self.ifdef(tag,self.leave_subtag,self.leave_tag)(tag)
 	def handle_data(self,data):
 		self.append(self.indent(data))
-	def handle_comment(self,comment):
-		self.append(self.indent("<!-- %s -->"%comment))
 	def handle_decl(self,decl):
 		self.append(self.indent("<!%s>"%decl))
 	def handle_pi(self,pi):
@@ -347,12 +360,6 @@ class XTPParser(HTMLParser):
 		for (handler,handled) in [(handler,getattr(self._engine,handler)) for handler in dir(self._engine) if handler.startswith('handle_')]:
 			setattr(self,handler,handled)
 		self.unknown_decl=self._engine.unknown_decl
-#			self.addmethod(
-#					(lambda self,*args,**kwargs:(
-#					self.log(args) and self.log(kwargs) and
-#					self.log(handler) and self.log(handled) and
-#					handled(*args,**kwargs))),handler)
-
 	def feed(self,data):
 		super().feed(data)
 
