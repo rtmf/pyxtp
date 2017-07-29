@@ -6,6 +6,12 @@ pages														= {
 						"resume"						,
 					]											,
 			}													,
+		"index.html"								: {
+				"template"							:	"h:index",
+				"data"									: [
+						"resume"						,
+					]											,
+			}													,
 		"resume.html"								: {
 				"template"							:	"h:resume",
 				"data"									: [
@@ -205,7 +211,7 @@ data														= {
 		}
 templates   = {
 		"h:level"		:	"""
-										<style type="text/css">
+										<style>
 											.level${level} {
 												font-size:${size};
 												flex-direction:column;
@@ -230,11 +236,11 @@ templates   = {
 											<meta charset="utf-8" />
 											<title>${title}</title>
 											<style type="text/css">
-												* {
+												html {
 													position:relative;
-													margin:0px;
-													padding:0px;
-													border:0px;
+													margin:0;
+													padding:0;
+													border:0;
 													float:none;
 													font-style:normal;
 													font-family:Sans;
@@ -242,7 +248,7 @@ templates   = {
 													display:flex;
 												}
 													body {
-													overflow:hidden;
+													height:100%;
 													}
 												.underborder {
 													border-top:0px;
@@ -269,7 +275,6 @@ templates   = {
 													margin-right:0.5in;
 													width:8.5in;
 													height:11in;
-													overflow:scroll;	
 													}
 												.viewport {
 													flex-direction:column;
@@ -292,12 +297,12 @@ templates   = {
 													display:flex;
 													flex-direction:row;
 													}
-												.½ {
+												.half {
 													width:50%;
 													display:inline-flex;
 													flex-direction:row;
 													}
-												.¼ {
+												.quarter {
 													width:25%;
 													display:inline-flex;
 													flex-direction:row;
@@ -334,12 +339,25 @@ templates   = {
 											</body>
 										</h:html>
 									""",
-		"h:paper"		:	"""
-										<div class="viewport">
-												<div class="paperdoc">
-													${_}
+									"h:resume":"""
+										<h:doc title="${fullname}'s Resume">
+		<div class="paperdoc">
+				<h:block level="1" title="${fullname}">
+															<h:block level="2" title="Contact Information">
+																<h:1>
+																	<h:quarter><h:a div="half" scheme="tel" __="phone" /></h:quarter>
+																	<h:a div="quarter" scheme="mailto" __="email" />
+																</h:1>
+															</h:block>
+															<h:bulletlist __="bullets" />
+															<h:position __="experience" />
+														</h:block>
 											</div>
-										</div>
+											</h:doc>
+									""",
+		"h:paper"		:	"""
+										<iframe src="resume.html" style="width:100%;height:100%">
+																				</iframe>
 									""",
 		"h:block"		:	"""
 										<div class="level${level:-0} section">
@@ -355,8 +373,8 @@ templates   = {
 										</div>
 									""",
 		"h:div"			:	"""<div class="${class}">${_}${__}</div>""",
-		"h:½"				:	"""<h:div class="½">${_}${__}</h:div>""",
-		"h:¼"				:	"""<h:div class="¼">${_}${__}</h:div>""",
+		"h:half"				:	"""<h:div class="half">${_}${__}</h:div>""",
+		"h:quarter"				:	"""<h:div class="quarter">${_}${__}</h:div>""",
 		"h:1"				:	"""<h:div class="one">${_}</h:div>""",
 		"h:section"	:	"""
 										<h:block level="2" ${right:+right="${right}"} title="${title}">
@@ -370,7 +388,7 @@ templates   = {
 											<h:duty __="duties" />
 										</h:section>
 									""",
-		"h:bullet"	:	"""<h:¼ />""",
+		"h:bullet"	:	"""<h:quarter />""",
 		"h:bullets"	:	"""
 										<h:1><h:bullet __="___" /></h:1>
 									""",
@@ -386,12 +404,9 @@ templates   = {
 												</a>
 										</h:div>
 										""",
-		"h:resume"	: """
+		"h:index"	: """
 										<h:doc title="${fullname}'s Resume">
 											<h:block level="1" title="${fullname}'s Resume">
-												<h:block level="2" title="Validation">
-													<h:validation />
-												</h:block>
 												<h:block level="2" title="Available Formats">
 													The following are generated with 
 													<a href="https://github.com/rtmf/pyxtp">PyXTP</a> 
@@ -401,18 +416,12 @@ templates   = {
 												</h:block>
 												<h:block level="2" title="Preview Display">
 													<h:paper>
-														<h:block level="1" title="${fullname}">
-															<h:block level="2" title="Contact Information">
-																<h:1>
-																	<h:¼><h:a div="½" scheme="tel" __="phone" /></h:¼>
-																	<h:a div="¼" scheme="mailto" __="email" />
-																</h:1>
-															</h:block>
-															<h:bulletlist __="bullets" />
-															<h:position __="experience" />
-														</h:block>
+										
 													</h:paper>
 												</h:block>
+												<h:block level="2" title="Validation">
+													<h:validation />
+												</h:block>`
 											</h:block>
 										</h:doc>
 									""",

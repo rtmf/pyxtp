@@ -371,7 +371,7 @@ def render_file(filename):
 				if data in sitemodule.data:
 					pagedata={**pagedata, **sitemodule.data[data]}
 		result=xtp.render(template=config["template"],**pagedata)
-		xtp.log(result)
+		#xtp.log(result)
 		f=open(file="./%s"%target,mode="w",encoding="utf8")
 		f.write(result)
 		f.flush()
