@@ -21,9 +21,18 @@ pages														= {
 	}															# end of pages
 data														= {
 		"resume"										: {
+				"formats"								: [
+					"pdf",
+					"odt",
+					"html",
+					"fodt",
+					"uot",
+					"doc",
+					"docx",
+					"rtf",
+					],
 				"fullname"							:	"Quinn Morrighan Storm",
 				"phone"									:	[
-						"+1.415.756.6327"		,
 						"+1.702.550.2984"		,
 										],
 				"email"			: [
@@ -250,6 +259,9 @@ templates   = {
 													body {
 													height:100%;
 													}
+													.resumeformat {
+													margin-right:20pt;
+													}
 												.underborder {
 													border-top:0px;
 													border-left:0px;
@@ -345,7 +357,7 @@ templates   = {
 				<h:block level="1" title="${fullname}">
 															<h:block level="2" title="Contact Information">
 																<h:1>
-																	<h:quarter><h:a div="half" scheme="tel" __="phone" /></h:quarter>
+																	<h:a div="quarter" scheme="tel" __="phone" />
 																	<h:a div="quarter" scheme="mailto" __="email" />
 																</h:1>
 															</h:block>
@@ -356,7 +368,7 @@ templates   = {
 											</h:doc>
 									""",
 		"h:paper"		:	"""
-										<iframe src="resume.html" style="width:100%;height:100%">
+										<iframe src="resume.html" style="width:100%;height:288pt">
 																				</iframe>
 									""",
 		"h:block"		:	"""
@@ -404,6 +416,9 @@ templates   = {
 												</a>
 										</h:div>
 										""",
+				"h:resumeformat":"""
+						<span class="resumeformat"><a href="resume.${__}">resume.${__}</a></span>
+				""",
 		"h:index"	: """
 										<h:doc title="${fullname}'s Resume">
 											<h:block level="1" title="${fullname}'s Resume">
@@ -413,6 +428,9 @@ templates   = {
 													and LibreOffice, 
 													PyXTP generates both resume.html and resume.fodt,
 													LibreOffice is used to convert these to various formats.
+													<p>
+													<h:resumeformat __="formats" />
+													</p>
 												</h:block>
 												<h:block level="2" title="Preview Display">
 													<h:paper>
@@ -1132,7 +1150,7 @@ templates   = {
 										</o:t1row>
 									""",
 		"o:phone"		:	"""
-										<o:titem tn="2" t="T2">${.}</o:titem>
+										<o:titem tn="2" t="T8" p="P8">${.}</o:titem>
 									""",
 		"o:email"		:	"""
 										<o:titem tn="2" t="T8" p="P8" style="">${.}</o:titem>
