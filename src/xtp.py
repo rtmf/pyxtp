@@ -164,7 +164,7 @@ class XTPExpansion(XTPLogger):
 					r"(?#match trailing })\})", self.submatch, text)
 		return text
 class XTP(XTPLogger):
-	noindent=["link","img","input","meta","br"]
+	noindent=["link","img","input","meta","br","xtp:template"]
 	autoclose=["link","img","input","meta","br"]
 	truthy=["yes","on","1","true"]
 	def __init__(self,templates,template=None,iterlist=None,attrs=[],**kwargs):
@@ -198,7 +198,7 @@ class XTP(XTPLogger):
 		depth=self.depth()
 		if iterlist is None:
 			if self._template in self._templates:
-				self._parser.feed(self.subst(self._templates[self._template]))
+				self._parser.feed("<xtp:template>%s</xtp:template>"%(self.subst(self._templates[self._template])))
 			else:
 				raise Exception('No such template: %s'%self._template)
 		else:
@@ -240,7 +240,7 @@ class XTP(XTPLogger):
 		return self.xtp_wrap("xtp::render[%s]"%template,self.pop())
 	def xtp_wrap(self,name,data):
 		return data
-		return self.render_comment(name+"::enter")+data+self.render_comment(name+"::leave")
+		#return "<!-- %s::enter -->%s<!-- %s::leave -->"%(name,data,name)
 	def subst(self,text):
 		return XTPExpansion([self._attrs,self._kwargs]).subst(text)
 	def indent(self,data):
@@ -279,7 +279,6 @@ class XTP(XTPLogger):
 		return self.grep(name,[parms,self._attrs,self._kwargs],emsg=emsg,**opts)
 	def attr(self,name,attrs=[],**opts):
 		return self.grep(name,[attrs+self._attrs],**opts)
-	
 	def render_comment(self,data):
 		return "<!-- %s -->"%data
 	def handle_pop_pre(self,ret=None):
@@ -312,7 +311,8 @@ class XTP(XTPLogger):
 		else:
 			raise Exception("XTP Tag that doesn't exist: %s"%tag)
 	def simple_tag(self,tag,attrs,startendtag=False,endtag=False):
-		self.append(self.render_tag(tag,attrs,startendtag=startendtag,endtag=endtag))
+		if tag != "xtp:template":
+			self.append(self.render_tag(tag,attrs,startendtag=startendtag,endtag=endtag))
 	def handle_starttag(self,tag,attrs):
 		if tag in self._templates:
 			self._opentag=(tag,attrs)

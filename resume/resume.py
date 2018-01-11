@@ -1150,10 +1150,10 @@ templates   = {
 										</o:t1row>
 									""",
 		"o:phone"		:	"""
-										<o:titem tn="2" t="T8" p="P8">${.}</o:titem>
+										<o:titem tn="2" t="T8" p="P8">${__}</o:titem>
 									""",
 		"o:email"		:	"""
-										<o:titem tn="2" t="T8" p="P8" style="">${.}</o:titem>
+										<o:titem tn="2" t="T8" p="P8" style="">${__}</o:titem>
 									""",
 		"o:contact"	:	"""
 										<o:t1row>
