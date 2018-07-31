@@ -24,3 +24,5 @@ $(BUILD):
 $(SUBDIRS): $(BUILD) $(PYXTP)
 	$(MAKE) -C $@ all SUBDIR=$(ROOT)/$@
 
+install:
+	$(MAKE) -C resume install

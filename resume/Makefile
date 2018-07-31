@@ -18,6 +18,7 @@ SOURCE = resume.py
 RESUME = $(BUILD)/resume/resume.
 BUILDS = $(FORMAT:%=$(RESUME)%)
 OUTPUT = $(BUILDS)
+SITE   = /srv/http/tymestl.org/
 all: $(OUTPUT)
 
 $(BUILD)/resume:
@@ -32,3 +33,6 @@ $(RESUME)%: $(RESUME)$(LOSRCF) $(SOURCE)
 $(BUILD)/%: %
 	mkdir -p $(BUILD)/$(dir $<)
 	cp $< $@
+
+install: $(BUILD)/resume
+	cp -rv $(BUILD)/resume/ -t $(SITE)
