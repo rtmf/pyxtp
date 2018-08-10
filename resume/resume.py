@@ -88,17 +88,22 @@ data														= {
 							"title"	:	"Dev/OPS",
 							"from"	:	"May, 2016",
 							"until"	:	"July, 2016",
+							"desc": [
+								"2nd Dev/OPS engineer, startup with significant enterprise clients and scale.",
+								],
 							"duties": [
 								"Dev/OPS for an e-commerce/SaaS site with an end-user-facing product using our backend as visibly placed as Wal*Mart, on an AWS+docker+ansible-backed platform."
-								],
+								], 
 							},
 						{
 							"name"	:	"Beautiful Sunrise Solutions",
 							"title"	:	"Founder",
 							"from"	:	"December, 2013",
 							"until"	:	"Present",
-							"duties": [
+							"desc": [
 							"Under this name, I have begun building a business centered around F/OSS consulting, seeking to offer comprehensive services as a true generalist. "		,
+								],
+							"duties": [
 							"So far, my clients have included tasks ranging from Dev/Ops for growing e-commerce site written in django, java for android for a telepresence robot, migrating a microfactory from windows to linux and more."		,
 							"This includes a continuation and expansion of much of the VPS services began under Concordia, as directly concordia-related activities have slowed in the past number of  years",
 								],
@@ -167,6 +172,7 @@ data														= {
 								"until"	:	"October, 2007",
 								"desc"	:	[
 									"Member of the tools team supporting internal development and process for the virtualization giant"		,
+									"I am a transwoman and during the time I worked with VMware I had not yet changed my name, I was given the same name as my father when I was born, Thomas Kenneth Morrow, and I changed it in early 2008 or late 2007 (I honestly do not remember if it was before or after new years) to Quinn Morrighan Storm.  There is also some code out there under my old name.",
 									],
 								"duties": [
 							"Build and install system development in C, Perl, Bash"		,
@@ -188,6 +194,7 @@ data														= {
 							"Created and maintained Debian style APT repositories containing Ubuntu packages, with automated package generation scripts"		,
 							"Hosted and managed development infrastructure, including source control through CVS, SVN and GIT and custom tools"		,
 							"Read each new post on the Beryl forums and replied to over 90% of them personally to provide individual support"		,
+							"I do not recall if I ever updated any copyright headers from Thomas Kenneth Morrow to Quinn Morrighan Storm when I changed my name in 2007/8",
 									]
 							},
 					],
@@ -410,10 +417,13 @@ templates   = {
 											${_}
 										</h:block>
 									""",
+		"h:desc"		: """<div class="one"><span style="font-style:italic !important; font-size:103%; font-weight:bold">${__}${_}${.}</span></div>
+		""",
 		"h:duty"		:	"""<h:1>${‣:+<span class="dot">${‣}</span>}${.}</h:1>
 									""",
 		"h:position": """
 										<h:section title="${name} — ${title}" right="${from} — ${until}">
+										  <h:desc __="desc" />
 											<h:duty __="duties" />
 										</h:section>
 									""",
