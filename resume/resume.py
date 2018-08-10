@@ -1199,7 +1199,7 @@ templates   = {
 									""",
 		"o:desc"		:	"""
 										<o:trow tn="4">
-											<o:titem tn="4" cs="6" P="P5" t="T5"}>${.}</o:titem>
+											<o:titem tn="4" cs="6" P="P5" t="T5"}>${__}</o:titem>
 											<o:titem tn="4" />
 										</o:trow>
 										""",
