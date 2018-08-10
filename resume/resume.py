@@ -83,6 +83,16 @@ data														= {
 					],
 				"experience": [
 						{
+
+							"name"	:	"ditto.com",
+							"title"	:	"Dev/OPS",
+							"from"	:	"May, 2016",
+							"until"	:	"July, 2016",
+							"duties": [
+								"Dev/OPS for an e-commerce/SaaS site with an end-user-facing product using our backend as visibly placed as Wal*Mart, on an AWS+docker+ansible-backed platform."
+								],
+							},
+						{
 							"name"	:	"Beautiful Sunrise Solutions",
 							"title"	:	"Founder",
 							"from"	:	"December, 2013",
@@ -90,13 +100,14 @@ data														= {
 							"duties": [
 							"Under this name, I have begun building a business centered around F/OSS consulting, seeking to offer comprehensive services as a true generalist. "		,
 							"So far, my clients have included tasks ranging from Dev/Ops for growing e-commerce site written in django, java for android for a telepresence robot, migrating a microfactory from windows to linux and more."		,
+							"This includes a continuation and expansion of much of the VPS services began under Concordia, as directly concordia-related activities have slowed in the past number of  years",
 								],
 							},
 						{
 							"name"	:	"Robots Everywhere",
 							"title"	:	"Minion",
 							"from"	:	"November, 2012",
-							"until"	:	"Present",
+							"until"	:	"February, 2014 w/ occasional consulting through present - see BSS above",
 							"desc": [
 								"I&apos;ve been engaged as a consultant with this small NASA contractor based out of San Rafael California, a staunch supporter of Open Hardware and Software specializing in automation itself and therefore the research, development, and just-in-time manufacturing of almost anything imaginable." 
 								],
@@ -104,7 +115,7 @@ data														= {
 							"Electronic design, prototyping, and assembly (Analog/audio and digital), PCB layout"		,
 							"Micro-controller hardware design and software development (MSP430, Arduino, Propeller)"		,
 							"3D printer maintenance and operation, Android software in Java, Linux/Windows Desktop Software in C with GTK"		,
-							"Custom software integration including hardware support and implementation of reverse engineered protocols"		,
+							"Custom software integration including hardware support and implementation of reverse engi neered protocols"		,
 								],
 							},
 						{
@@ -113,7 +124,13 @@ data														= {
 							"from"	:	"October, 2009",
 							"until"	:	"Present",
 							"desc": [
-							"A collection of improbable people working together to design a more interesting future for us all"		,
+							"A collection of improbable people working together to design a more interesting future for us all"		
+								],
+							"duties": [
+								"Everyday infrastructure for getting the work of thinking very hard done",
+								"Tool development, co-working and -learning environments",
+								"VPS management first on ubuntu then arch with services ranging from DNS to e-mail to VPN (even StrongSwan for a very frustrating short time)",
+								"Everything home/entertainment-side too with synchronized streaming audio in arbitrary collections of rooms and a media center setup",
 								],
 							},
 						{
@@ -386,7 +403,7 @@ templates   = {
 									""",
 		"h:div"			:	"""<div class="${class}">${_}${__}</div>""",
 		"h:half"				:	"""<h:div class="half">${_}${__}</h:div>""",
-		"h:quarter"				:	"""<h:div class="quarter">${_}${__}</h:div>""",
+		"h:quarter"				:	"""<h:div class="quarter" />""",
 		"h:1"				:	"""<h:div class="one">${_}</h:div>""",
 		"h:section"	:	"""
 										<h:block level="2" ${right:+right="${right}"} title="${title}">
