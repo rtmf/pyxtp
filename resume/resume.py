@@ -381,8 +381,8 @@ templates   = {
 				<h:block level="1" title="${fullname}">
 															<h:block level="2" title="Contact Information">
 																<h:1>
-																	<h:a div="quarter" scheme="tel" __="phone" />
-																	<h:a div="quarter" scheme="mailto" __="email" />
+																	<h:a class="quarter" scheme="tel" __="phone" />
+																	<h:a class="quarter" scheme="mailto" __="email" />
 																</h:1>
 															</h:block>
 															<h:bulletlist __="bullets" />
@@ -409,6 +409,7 @@ templates   = {
 										</div>
 									""",
 		"h:div"			:	"""<div class="${class}">${_}${__}</div>""",
+		"h:wrdiv"			:	"""<div class="${class}">${_}</div>""",
 		"h:half"				:	"""<h:div class="half">${_}${__}</h:div>""",
 		"h:quarter"				:	"""<h:div class="quarter" />""",
 		"h:1"				:	"""<h:div class="one">${_}</h:div>""",
@@ -436,12 +437,13 @@ templates   = {
 											<h:bullets __="items" _#_="4"/>
 										</h:section>
 									""",
+				"h:ato"	: """
+										<a href="${scheme}${target}">${target}</a>
+				""",
 					"h:a"	:	"""
-										<h:div class="${div}">
-												<a href="${scheme}${__}">
-														${__}
-												</a>
-										</h:div>
+										<div class="quarter">
+												<h:ato scheme="${scheme}" target="${__}" />
+										</div>
 										""",
 				"h:resumeformat":"""
 						<span class="resumeformat"><a href="resume.${__}">resume.${__}</a></span>
@@ -1191,6 +1193,7 @@ templates   = {
 												<o:trow tn="2" s="2">
 													<o:titem />
 													<o:phone __="phone" />
+													<o:titem />
 													<o:email __="email" />
 													<o:titem />
 												</o:trow>
